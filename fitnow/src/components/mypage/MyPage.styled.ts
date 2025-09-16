@@ -14,6 +14,7 @@ export const ContentWrapperStyled = styled.div`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.background};
   overflow: hidden;
+  
 `;
 
 export const SidebarStyled = styled.aside`
