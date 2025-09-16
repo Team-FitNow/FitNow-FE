@@ -1,35 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import PDP_ScreenshotMatch from "./pages/PDP";  // PDP 페이지 가져오기
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Router>
+      <Routes>
+        {/* 홈 화면 (테스트용) */}
+        <Route path="/" element={<div>홈 화면</div>} />
 
-export default App
+        {/* 상품 상세 페이지 (PDP 페이지, 와이어프레임용) */}
+        <Route path="/product/:id" element={<PDP_ScreenshotMatch />} />  {/* 상품 상세 페이지 */}
+      </Routes>
+    </Router>
+  );
+}
+export default App;
