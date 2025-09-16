@@ -1,24 +1,33 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import LoginPage from './pages/LoginPage'
-import FindIdPage from './pages/FindIdPage'
-import FindIdResultPage from './pages/FindIdResultPage'
-import SignupPage from './pages/SignupPage'
-import ResetPasswordPage from './pages/ResetPasswordPage'
-import './App.css'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import styled from "styled-components"; // Styled-Components 사용
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
-function App() {
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+`;
+
+const ContentWrap = styled.main`
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  justify-content: center;
+`;
+
+const App: React.FC = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/find-id" element={<FindIdPage />} />
-        <Route path="/find-id-result" element={<FindIdResultPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-      </Routes>
-    </Router>
-  )
-}
+    <AppContainer>
+      <Header />
+      <ContentWrap>
+        <Outlet />
+      </ContentWrap>
+      <Footer />
+    </AppContainer>
+  );
+};
 
-export default App
+export default App;
