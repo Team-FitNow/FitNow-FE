@@ -1,18 +1,34 @@
 
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import PDP_ScreenshotMatch from "./pages/PDP";  // PDP 페이지 가져오기
+import React from "react";
+import { Outlet } from "react-router-dom";
+import styled from "styled-components"; // Styled-Components 사용
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
-function App() {
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+`;
+
+const ContentWrap = styled.main`
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  justify-content: center;
+`;
+
+const App: React.FC = () => {
   return (
-    <Router>
-      <Routes>
-        {/* 홈 화면 (테스트용) */}
-        <Route path="/" element={<div>홈 화면</div>} />
-
-        {/* 상품 상세 페이지 (PDP 페이지, 와이어프레임용) */}
-        <Route path="/product/:id" element={<PDP_ScreenshotMatch />} />  {/* 상품 상세 페이지 */}
-      </Routes>
-    </Router>
+    <AppContainer>
+      <Header />
+      <ContentWrap>
+        <Outlet />
+      </ContentWrap>
+      <Footer />
+    </AppContainer>
   );
-}
+};
+
 export default App;
