@@ -1,3 +1,23 @@
+<!-- import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.tsx";
+import { ThemeProvider } from "styled-components";
+
+// 테마 정의
+const theme = {
+  colors: {
+    primary: "#3498db",
+    secondary: "#e74c3c",
+  },
+};
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+  </StrictMode> -->
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
