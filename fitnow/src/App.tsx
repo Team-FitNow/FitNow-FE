@@ -1,19 +1,33 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { ThemeProvider } from "styled-components";
-import { theme } from "./theme";
-import MyPage from "./pages/MyPage";
+import React from "react";
+import { Outlet } from "react-router-dom";
+import styled from "styled-components"; // Styled-Components 사용
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
-function App() {
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+`;
+
+const ContentWrap = styled.main`
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  justify-content: center;
+`;
+
+const App: React.FC = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Navigate to="/mypage" replace />} />
-          <Route path="/mypage" element={<MyPage />} />
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <AppContainer>
+      <Header />
+      <ContentWrap>
+        <Outlet />
+      </ContentWrap>
+      <Footer />
+    </AppContainer>
   );
-}
+};
 
-export default App
+export default App;
