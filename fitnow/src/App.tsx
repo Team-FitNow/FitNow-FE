@@ -1,16 +1,26 @@
-import { useState } from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import React from "react";
+import { Outlet } from "react-router-dom";
+import styled from "styled-components"; // Styled-Components 사용
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
-import Cart from "./pages/cart"; // 🛒 Cart 컴포넌트 불러오기
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+`;
 
-function App() {
-  const [count, setCount] = useState(0);
+const ContentWrap = styled.main`
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  justify-content: center;
+`;
 
+const App: React.FC = () => {
   return (
-    <BrowserRouter>
+<!--     <BrowserRouter>
 
       {/* 네비게이션 */}
       <nav style={{ margin: "1rem 0" }}>
@@ -26,6 +36,15 @@ function App() {
       </Routes>
     </BrowserRouter>
   );
-}
+} -->
+    <AppContainer>
+      <Header />
+      <ContentWrap>
+        <Outlet />
+      </ContentWrap>
+      <Footer />
+    </AppContainer>
+  );
+};
 
 export default App;
