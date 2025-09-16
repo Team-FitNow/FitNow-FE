@@ -35,7 +35,7 @@ const products = [
     id: 4,
     brand: "ASICS",
     name: "ROAD WINTER JACKET",
-    price: 245000,
+    price: 255000,
     imageUrl:
       "https://image.msscdn.net/thumbnails/images/goods_img/20230306/3125292/3125292_16976153322800_big.jpg?w=1200",
     isNew: true,
