@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // 2) 절대경로 import
-import KakaoLogin from "../components/KakaoLogin";
-import { checkTokenExpiration } from "../utils/auth";
+import KakaoLogin from "../../components/KakaoLogin";
+import { checkTokenExpiration } from "../../utils/auth";
 
 // 3) 상대경로 import (부모 → 자식)
 
