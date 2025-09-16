@@ -1,10 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.tsx";
+import App from "./App";
 import { ThemeProvider } from "styled-components";
 
-// 테마 정의
 const theme = {
   colors: {
     primary: "#3498db",
