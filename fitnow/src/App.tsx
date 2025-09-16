@@ -15,7 +15,6 @@ const ContentWrap = styled.main`
   flex: 1;
   width: 100%;
   max-width: 1200px;
-  border: 2px solid blue;
   justify-content: center;
 `;
 

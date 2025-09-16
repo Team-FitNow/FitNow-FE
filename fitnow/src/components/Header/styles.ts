@@ -72,6 +72,7 @@ export const NavItem = styled.li`
 
 export const HeaderBottom = styled.div`
   border-top: 1px solid #dfdfdfff;
+  border-bottom: 1px solid #dfdfdfff;
   padding: 12px 0;
 `;
 

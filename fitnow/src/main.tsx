@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
-import MainPage from "./pages/MainPage";
-import EmptyPage from "./pages/EmptyPage";
+import MainPage from "./pages/Main/MainPage";
+import EmptyPage from "./pages/Main/EmptyPage";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
