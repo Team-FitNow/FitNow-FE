@@ -23,13 +23,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<App />}>
             <Route index element={<MainPage />} />
             <Route path="empty" element={<EmptyPage />} />
-            {/*<Route path="/" element={<LoginPage />} />*/}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/find-id" element={<FindIdPage />} />
             <Route path="/find-id-result" element={<FindIdResultPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="product/:id" element={<ProductDetailPage />} />
+            <Route path="/product/:id" element={<ProductDetailPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
