@@ -3,7 +3,7 @@ import { Search, ShoppingCart, User, Bell, Bookmark } from "lucide-react";
 import {
   Page, TopBar, Container, Main, Viewer, Panel, PanelTop, Title, SubTitle, SmallText,
   PriceRow, SizeGrid, SizePill, FitInfo, Links, CTA, BigButton, IconBtn,
-  Accordion, Section, SectionHead, SectionBody,
+  Accordion, Section, SectionHead, SectionBody, CartButton, BuyButton
 } from "./ProductDetailPage.styled";
 import { PRODUCT, BRAND_PRODUCTS, RECENT_PRODUCTS, WITH_ITEM, INVENTORY, currency, type Size } from './data';
 
@@ -11,7 +11,6 @@ const WithItemSection = lazy(() => import("./WithItemSection"));
 const BrandProductsSection = lazy(() => import("./BrandProductsSection"));
 const RecentProductsSection = lazy(() => import("./RecentProductsSection"));
 
-//상세 페이지 메인
 export default function ProductDetailPage() {
   const [img, setImg] = useState(0);
   const [size, setSize] = useState<Size | null>(null);
@@ -28,17 +27,16 @@ export default function ProductDetailPage() {
     alert(`장바구니 담기: ${PRODUCT.name} / ${size}`);
   };
 
-  // 이미지 클릭 시 이전/다음 이미지로 전환하는 함수
   const handleImageClick = (direction: "next" | "prev") => {
     if (direction === "next") {
-      setImg((prev) => (prev + 1) % IMAGES.length); // 마지막 이미지 후 처음으로
+      setImg((prev) => (prev + 1) % IMAGES.length);
     } else if (direction === "prev") {
-      setImg((prev) => (prev - 1 + IMAGES.length) % IMAGES.length); // 첫 번째 이미지 전 후 마지막으로
+      setImg((prev) => (prev - 1 + IMAGES.length) % IMAGES.length);
     }
   };
 
   const toggleWishlist = () => {
-    setIsInWishlist((prevState) => !prevState); // 위시리스트 상태 토글
+    setIsInWishlist((prevState) => !prevState);
     alert(isInWishlist ? "위시리스트에서 제거되었습니다." : "위시리스트에 추가되었습니다.");
   };
 
@@ -59,7 +57,7 @@ export default function ProductDetailPage() {
                 <img
                   src={IMAGES[img]}
                   alt={`모델 이미지 ${img + 1}`}
-                  onClick={() => handleImageClick("next")} // 이미지 클릭 시 다음 이미지로 전환
+                  onClick={() => handleImageClick("next")} 
                 />
               </>
             )}
@@ -69,7 +67,7 @@ export default function ProductDetailPage() {
             <PanelTop>
               <span className="brand">{PRODUCT.brand}</span>
               <button className="bookmark" aria-label="위시리스트" onClick={toggleWishlist}>
-                <Bookmark size={18} color={isInWishlist ? "#0d5e4c" : "#e3e3e3"} /> {/* 색상 변경 */}
+                <Bookmark size={18} color={isInWishlist ? "#0d5e4c" : "#e3e3e3"} />
               </button>
             </PanelTop>
 
@@ -108,14 +106,27 @@ export default function ProductDetailPage() {
             </Links>
 
             <CTA>
-              <BigButton disabled={!size} onClick={addToCart} $disabled={!size}>
-                {size ? "장바구니" : "사이즈를 선택해주세요."}
+              {/* 조건에 따라 두 개의 버튼을 나란히 보이게 */}
+              {!size ? (
+              <BigButton disabled={!size} style={{ width: "100%" }}>
+                사이즈를 선택해주세요.
               </BigButton>
+              ) : (
+                <div style={{ display: "flex", width: "100%" }}>
+                  <CartButton onClick={addToCart} style={{ flex: 1, marginRight: "8px" }}>
+                    장바구니
+                  </CartButton>
+                  <BuyButton onClick={() => alert("구매하기")} $disabled={false} style={{ flex: 1 }}>
+                    구매하기
+                  </BuyButton>
+                </div>
+              )}
               <IconBtn aria-label="위시리스트" onClick={toggleWishlist}>
                 <Bookmark size={18} color={isInWishlist ? "#0d5e4c" : "#e3e3e3"} />
               </IconBtn>
             </CTA>
 
+            {/* 아코디언 */}
             <Accordion>
               <Section>
                 <SectionHead onClick={() => toggle("상세정보")}>

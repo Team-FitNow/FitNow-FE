@@ -45,9 +45,11 @@ export const PanelTop = styled.div`
 export const Title = styled.h1`
   font-size: 28px; font-weight: 800; margin: 0 0 4px; line-height:1.15;
 `;
+
 export const SubTitle = styled.div`
   color:#222; margin-bottom: 6px; letter-spacing:.4px;
 `;
+
 export const SmallText = styled.div`
   color:#777; font-size: 13px; margin-bottom: 2px;
 `;
@@ -86,6 +88,7 @@ export const BigButton = styled.button<{ $disabled?: boolean }>`
   background: ${({ $disabled }) => ($disabled ? "#f6f7f8" : "#0d5e4c")};
   color: ${({ $disabled }) => ($disabled ? "#777" : "#fff")};
   font-weight:800; letter-spacing:.2px;
+  width: 100%;
 `;
 
 export const IconBtn = styled.button`
@@ -120,9 +123,32 @@ export const SectionHead = styled.div`
     outline: none;
   }
 `;
+
 export const SectionBody = styled.div`
   padding: 15px;
   font-size: 14px;
   line-height: 1.6;
-  border-top: 1px solid #e0e0e0; // 펼쳐질 때 버튼과 내용 사이에 구분선
+  border-top: 1px solid #e0e0e0;
+`;
+
+// 장바구니 버튼 스타일
+export const CartButton = styled(BigButton)`
+  background: #0d5e4c;
+  border: 1px solid #0d5e4c;
+  color: #fff;
+  cursor: pointer;
+  &:hover {
+    background: #0a4d3b;
+  }
+`;
+
+// 구매하기 버튼 스타일 (하얀색 배경)
+export const BuyButton = styled(BigButton)`
+  background: #fff;
+  border: 1px solid #0d5e4c;
+  color: #0d5e4c;
+  cursor: pointer;
+  &:hover {
+    background: #f6f7f8;
+  }
 `;
