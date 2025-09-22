@@ -1,23 +1,4 @@
-<!-- import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./App.tsx";
-import { ThemeProvider } from "styled-components";
 
-// 테마 정의
-const theme = {
-  colors: {
-    primary: "#3498db",
-    secondary: "#e74c3c",
-  },
-};
-
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
-  </StrictMode> -->
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -31,7 +12,7 @@ import FindIdPage from './pages/login/FindIdPage'
 import FindIdResultPage from './pages/login/FindIdResultPage'
 import SignupPage from './pages/login/SignupPage'
 import ResetPasswordPage from './pages/login/ResetPasswordPage'
-import PDP_ScreenshotMatch from "./pages/PDP";
+import ProductDetailPage from "./pages/product/ProductDetailPage";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -48,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/find-id-result" element={<FindIdResultPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/product/:id" element={<PDP_ScreenshotMatch />} />
+            <Route path="product/:id" element={<ProductDetailPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
