@@ -16,6 +16,7 @@ export default function ProductDetailPage() {
   const [img, setImg] = useState(0);
   const [size, setSize] = useState<Size | null>(null);
   const [open, setOpen] = useState<{ [k: string]: boolean }>({ 상세정보: true, 배송안내: false, 반품안내: false });
+  const [isInWishlist, setIsInWishlist] = useState(false);
 
   const IMAGES = PRODUCT?.images ?? [];
   const SIZES  = PRODUCT?.sizes ?? [];
@@ -34,6 +35,11 @@ export default function ProductDetailPage() {
     } else if (direction === "prev") {
       setImg((prev) => (prev - 1 + IMAGES.length) % IMAGES.length); // 첫 번째 이미지 전 후 마지막으로
     }
+  };
+
+  const toggleWishlist = () => {
+    setIsInWishlist((prevState) => !prevState); // 위시리스트 상태 토글
+    alert(isInWishlist ? "위시리스트에서 제거되었습니다." : "위시리스트에 추가되었습니다.");
   };
 
   return (
@@ -62,7 +68,9 @@ export default function ProductDetailPage() {
           <Panel>
             <PanelTop>
               <span className="brand">{PRODUCT.brand}</span>
-              <button className="bookmark" aria-label="위시리스트"><Bookmark size={18} /></button>
+              <button className="bookmark" aria-label="위시리스트" onClick={toggleWishlist}>
+                <Bookmark size={18} color={isInWishlist ? "#0d5e4c" : "#e3e3e3"} /> {/* 색상 변경 */}
+              </button>
             </PanelTop>
 
             <Title>{PRODUCT.name}</Title>
@@ -103,7 +111,9 @@ export default function ProductDetailPage() {
               <BigButton disabled={!size} onClick={addToCart} $disabled={!size}>
                 {size ? "장바구니" : "사이즈를 선택해주세요."}
               </BigButton>
-              <IconBtn aria-label="위시리스트"><Bookmark size={18} /></IconBtn>
+              <IconBtn aria-label="위시리스트" onClick={toggleWishlist}>
+                <Bookmark size={18} color={isInWishlist ? "#0d5e4c" : "#e3e3e3"} />
+              </IconBtn>
             </CTA>
 
             <Accordion>
