@@ -15,7 +15,10 @@ export default function ProductDetailPage() {
   const [img, setImg] = useState(0);
   const [size, setSize] = useState<Size | null>(null);
   const [open, setOpen] = useState<{ [k: string]: boolean }>({ 상세정보: true, 배송안내: false, 반품안내: false });
-  const [isInWishlist, setIsInWishlist] = useState(false);
+  
+  // 두 개의 위시리스트 상태 관리
+  const [isInProductWishlist, setIsInProductWishlist] = useState(false);
+  const [isInBrandWishlist, setIsInBrandWishlist] = useState(false);
 
   const IMAGES = PRODUCT?.images ?? [];
   const SIZES  = PRODUCT?.sizes ?? [];
@@ -35,9 +38,16 @@ export default function ProductDetailPage() {
     }
   };
 
-  const toggleWishlist = () => {
-    setIsInWishlist((prevState) => !prevState);
-    alert(isInWishlist ? "위시리스트에서 제거되었습니다." : "위시리스트에 추가되었습니다.");
+  // 상품 위시리스트 토글
+  const toggleProductWishlist = () => {
+    setIsInProductWishlist((prevState) => !prevState);
+    alert(isInProductWishlist ? "상품 위시리스트에서 제거되었습니다." : "상품 위시리스트에 추가되었습니다.");
+  };
+
+  // 브랜드 위시리스트 토글
+  const toggleBrandWishlist = () => {
+    setIsInBrandWishlist((prevState) => !prevState);
+    alert(isInBrandWishlist ? "브랜드 위시리스트에서 제거되었습니다." : "브랜드 위시리스트에 추가되었습니다.");
   };
 
   return (
@@ -66,9 +76,11 @@ export default function ProductDetailPage() {
           <Panel>
             <PanelTop>
               <span className="brand">{PRODUCT.brand}</span>
-              <button className="bookmark" aria-label="위시리스트" onClick={toggleWishlist}>
-                <Bookmark size={18} color={isInWishlist ? "#0d5e4c" : "#e3e3e3"} />
+              {/* 브랜드 위시리스트 버튼 */}
+              <button className="bookmark" aria-label="브랜드 위시리스트" onClick={toggleBrandWishlist}>
+                <Bookmark size={18} color={isInBrandWishlist ? "#0d5e4c" : "#e3e3e3"} />
               </button>
+              
             </PanelTop>
 
             <Title>{PRODUCT.name}</Title>
@@ -121,8 +133,9 @@ export default function ProductDetailPage() {
                   </BuyButton>
                 </div>
               )}
-              <IconBtn aria-label="위시리스트" onClick={toggleWishlist}>
-                <Bookmark size={18} color={isInWishlist ? "#0d5e4c" : "#e3e3e3"} />
+              {/* 상품 위시리스트 버튼 */}
+              <IconBtn className="bookmark" aria-label="상품 위시리스트" onClick={toggleProductWishlist}>
+                <Bookmark size={18} color={isInProductWishlist ? "#0d5e4c" : "#e3e3e3"} />
               </IconBtn>
             </CTA>
 
