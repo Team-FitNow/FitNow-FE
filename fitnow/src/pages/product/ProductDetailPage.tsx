@@ -17,7 +17,6 @@ export default function ProductDetailPage() {
   const [size, setSize] = useState<Size | null>(null);
   const [open, setOpen] = useState<{ [k: string]: boolean }>({ 상세정보: true, 배송안내: false, 반품안내: false });
 
-  // 안전 가드(예상치 못한 undefined 접근 방지)
   const IMAGES = PRODUCT?.images ?? [];
   const SIZES  = PRODUCT?.sizes ?? [];
   const FIT    = PRODUCT?.fit;

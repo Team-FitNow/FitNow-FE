@@ -24,7 +24,7 @@ export type RecentItem = {
   soldout: boolean;
 };
 
-// 데이터
+
 export const currency = (n: number) => n.toLocaleString("ko-KR");
 
 export const PRODUCT: Product & {

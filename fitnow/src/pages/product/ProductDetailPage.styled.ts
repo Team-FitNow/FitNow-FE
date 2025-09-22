@@ -91,7 +91,7 @@ export const BigButton = styled.button<{ $disabled?: boolean }>`
 export const IconBtn = styled.button`
   width: 42px; height: 48px; border: 1px solid #e3e3e3; border-radius: 10px; background:#fff; display:grid; place-items:center;
 `;
-// 아코디언
+
 export const Accordion = styled.div`
   margin-top: 14px; border-top: 1px solid #eee;
 `;
