@@ -2,7 +2,7 @@ import React from "react";
 import { SectionWrap, Card } from "./WithItemSection.styled";
 import { type Product } from "./data";
 import { currency } from "./data";
-
+//함께 착용한 상품
 export default function WithItemSection({ item }: { item: Product }) {
   return (
     <SectionWrap>

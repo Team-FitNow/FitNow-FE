@@ -3,6 +3,7 @@ import { SectionWrap, Grid, Card } from "./BrandProductsSection.styled";
 import { type Product } from "./data";
 import { currency } from "./data";
 
+// 브랜드 상품
 export default function BrandProductsSection({ items }: { items: Product[] }) {
   return (
     <SectionWrap>

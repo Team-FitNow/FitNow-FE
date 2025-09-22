@@ -8,7 +8,6 @@ import {
 } from "./ProductDetailPage.styled";
 import { PRODUCT, BRAND_PRODUCTS, RECENT_PRODUCTS, WITH_ITEM, INVENTORY, currency, type Size } from './data';
 
-// 🔥 섹션들 lazy import로 변경 (섹션 모듈에 문제가 있어도 메인은 살아남음)
 const WithItemSection = lazy(() => import("./WithItemSection"));
 const BrandProductsSection = lazy(() => import("./BrandProductsSection"));
 const RecentProductsSection = lazy(() => import("./RecentProductsSection"));

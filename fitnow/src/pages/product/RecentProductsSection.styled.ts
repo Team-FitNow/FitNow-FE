@@ -10,7 +10,7 @@ export const Grid = styled.div`
   @media (max-width: 1180px){ grid-template-columns: repeat(2, minmax(0,1fr)); }
   @media (max-width: 720px){ grid-template-columns: 1fr; }
 `;
-
+// 카드
 export const Card = styled.div`
   border: 1px solid #eee; border-radius: 12px; overflow: hidden; background:#fff; display:grid; grid-template-rows: auto auto;
   .imgWrap{ background:#f6f6f6; }

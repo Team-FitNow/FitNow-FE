@@ -1,6 +1,5 @@
 // src/pages/product/data.ts
 
-// 타입 정의
 export type Size = "XS" | "S" | "M" | "L";
 
 export type Product = {
