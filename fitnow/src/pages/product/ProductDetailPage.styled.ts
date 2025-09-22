@@ -21,7 +21,7 @@ export const Main = styled.div`
 
 export const Viewer = styled.div`
   position:relative; border-radius: 16px; overflow:hidden; background:#fafafa; border:1px solid #eee;
-  img{ width:100%; height:auto; display:block; }
+  img{ width:100%; height:auto; display:block; cursor:pointer; }
   .nav{ position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.85); border:1px solid #ddd; border-radius:999px; padding:6px; cursor:pointer; }
   .prev{ left: 10px; }
   .next{ right: 10px; }
@@ -101,10 +101,28 @@ export const Section = styled.div`
   border-bottom: 1px solid #eee;
 `;
 
-export const SectionHead = styled.button`
-  width:100%; display:flex; justify-content:space-between; align-items:center; padding:16px 0; font-weight:800;
+export const SectionHead = styled.div`
+  background-color: white;
+  color: #333;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #f1f1f1;
+  }
+  &:focus {
+    outline: none;
+  }
 `;
-
 export const SectionBody = styled.div`
-  color:#444; line-height:1.7; padding: 0 0 18px; font-size:14px;
+  padding: 15px;
+  font-size: 14px;
+  line-height: 1.6;
+  border-top: 1px solid #e0e0e0; // 펼쳐질 때 버튼과 내용 사이에 구분선
 `;
