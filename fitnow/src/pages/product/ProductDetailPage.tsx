@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense } from "react";
 import { Search, ShoppingCart, User, Bell, Bookmark } from "lucide-react";
 import {
   Page, TopBar, Container, Main, Viewer, Panel, PanelTop, Title, SubTitle, SmallText,

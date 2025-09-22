@@ -1,4 +1,3 @@
-import React from "react";
 import { SectionWrap, Grid, Card } from "./BrandProductsSection.styled";
 import { type Product } from "./data";
 import { currency } from "./data";

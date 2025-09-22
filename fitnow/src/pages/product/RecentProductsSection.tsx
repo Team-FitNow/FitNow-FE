@@ -1,4 +1,3 @@
-import React from "react";
 import { SectionWrap, Grid, Card } from "./RecentProductsSection.styled";
 import { type RecentItem } from "./data";
 import { currency } from "./data";

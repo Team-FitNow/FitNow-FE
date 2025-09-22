@@ -152,3 +152,8 @@ export const BuyButton = styled(BigButton)`
     background: #f6f7f8;
   }
 `;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+`;

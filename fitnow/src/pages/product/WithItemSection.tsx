@@ -1,4 +1,3 @@
-import React from "react";
 import { SectionWrap, Card } from "./WithItemSection.styled";
 import { type Product } from "./data";
 import { currency } from "./data";
