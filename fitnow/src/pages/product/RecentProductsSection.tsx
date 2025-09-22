@@ -3,7 +3,7 @@ import { SectionWrap, Grid, Card } from "./RecentProductsSection.styled";
 import { type RecentItem } from "./data";
 import { currency } from "./data";
 
-
+//최근 본 상품
 export default function RecentProductsSection({ items }: { items: RecentItem[] }) {
   return (
     <SectionWrap>

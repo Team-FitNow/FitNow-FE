@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+//
 export const SectionWrap = styled.section`
   margin-top: 40px;
   h3{ font-size: 16px; font-weight: 800; margin-bottom: 14px; }

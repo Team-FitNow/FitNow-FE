@@ -12,7 +12,7 @@ export type Product = {
   fit?: { hw: string; wearing: Size };
   sizes?: Size[];
   images?: string[];
-  img?: string;  // 카드/섹션용
+  img?: string;
 };
 
 export type RecentItem = {

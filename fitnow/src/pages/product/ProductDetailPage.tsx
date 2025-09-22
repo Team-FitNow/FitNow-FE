@@ -12,6 +12,7 @@ const WithItemSection = lazy(() => import("./WithItemSection"));
 const BrandProductsSection = lazy(() => import("./BrandProductsSection"));
 const RecentProductsSection = lazy(() => import("./RecentProductsSection"));
 
+//상세 페이지 메인
 export default function ProductDetailPage() {
   const [img, setImg] = useState(0);
   const [size, setSize] = useState<Size | null>(null);
