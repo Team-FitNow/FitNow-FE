@@ -1,6 +1,5 @@
-// ProductDetailPage.tsx
 import React, { useState, lazy, Suspense } from "react";
-import { ChevronLeft, ChevronRight, Search, ShoppingCart, User, Bell, Bookmark } from "lucide-react";
+import { Search, ShoppingCart, User, Bell, Bookmark } from "lucide-react";
 import {
   Page, TopBar, Container, Main, Viewer, Panel, PanelTop, Title, SubTitle, SmallText,
   PriceRow, SizeGrid, SizePill, FitInfo, Links, CTA, BigButton, IconBtn,
@@ -28,6 +27,15 @@ export default function ProductDetailPage() {
     alert(`장바구니 담기: ${PRODUCT.name} / ${size}`);
   };
 
+  // 이미지 클릭 시 이전/다음 이미지로 전환하는 함수
+  const handleImageClick = (direction: "next" | "prev") => {
+    if (direction === "next") {
+      setImg((prev) => (prev + 1) % IMAGES.length); // 마지막 이미지 후 처음으로
+    } else if (direction === "prev") {
+      setImg((prev) => (prev - 1 + IMAGES.length) % IMAGES.length); // 첫 번째 이미지 전 후 마지막으로
+    }
+  };
+
   return (
     <Page>
       <TopBar>
@@ -42,13 +50,11 @@ export default function ProductDetailPage() {
           <Viewer>
             {IMAGES.length > 0 && (
               <>
-                <button className="nav prev" onClick={() => setImg((p) => (p - 1 + IMAGES.length) % IMAGES.length)} aria-label="이전 이미지">
-                  <ChevronLeft />
-                </button>
-                <img src={IMAGES[img]} alt={`모델 이미지 ${img + 1}`} />
-                <button className="nav next" onClick={() => setImg((p) => (p + 1) % IMAGES.length)} aria-label="다음 이미지">
-                  <ChevronRight />
-                </button>
+                <img
+                  src={IMAGES[img]}
+                  alt={`모델 이미지 ${img + 1}`}
+                  onClick={() => handleImageClick("next")} // 이미지 클릭 시 다음 이미지로 전환
+                />
               </>
             )}
           </Viewer>
