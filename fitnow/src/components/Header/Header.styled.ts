@@ -1,6 +1,6 @@
 // src/components/Header/styles.ts
 
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 export const HeaderContainer = styled.header`
   top: 0;
@@ -83,4 +83,14 @@ export const CategoryMenu = styled.ul`
 export const HighlightItem = styled(NavItem)`
   color: red;
   font-weight: 500;
+`;
+
+export const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Calisto MT';
+    src: url('/fonts/CalistoMT-Regular.woff2') format('woff2'),
+         url('/fonts/CalistoMT-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
 `;
