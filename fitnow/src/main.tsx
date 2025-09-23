@@ -8,12 +8,13 @@ import MyPage from "./pages/mypage/MyPage";
 import FavoritesPage from "./pages/mypage/FavoritesPage";
 import MainPage from "./pages/Main/MainPage";
 import EmptyPage from "./pages/Main/EmptyPage";
-import LoginPage from './pages/login/LoginPage'
-import FindIdPage from './pages/login/FindIdPage'
-import FindIdResultPage from './pages/login/FindIdResultPage'
-import SignupPage from './pages/login/SignupPage'
-import ResetPasswordPage from './pages/login/ResetPasswordPage'
+import LoginPage from "./pages/login/LoginPage";
+import FindIdPage from "./pages/login/FindIdPage";
+import FindIdResultPage from "./pages/login/FindIdResultPage";
+import SignupPage from "./pages/login/SignupPage";
+import ResetPasswordPage from "./pages/login/ResetPasswordPage";
 import "./index.css";
+
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -35,5 +36,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
