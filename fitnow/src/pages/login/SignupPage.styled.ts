@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
 export const PageStyled = styled.div`
-  min-height: 100dvh;
+  min-height: calc(100dvh - 200px);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: ${({ theme }) => theme.spacing.lg} 0;
 `;
 
 export const CardStyled = styled.div`
@@ -69,6 +70,33 @@ export const SelectStyled = styled.select`
   &:focus {
     border-color: ${({ theme }) => theme.colors.focus};
     box-shadow: 0 0 0 3px ${({ theme }) => theme.focusRing};
+  }
+`;
+
+export const GenderButtonContainer = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing.sm};
+`;
+
+export const GenderButton = styled.button<{ $selected?: boolean }>`
+  flex: 1;
+  height: 36px;
+  border: 1px solid ${({ theme, $selected }) => 
+    $selected ? theme.colors.primary : theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: 500;
+  color: ${({ theme, $selected }) => 
+    $selected ? theme.colors.onPrimary : theme.colors.textPrimary};
+  background: ${({ theme, $selected }) => 
+    $selected ? theme.colors.primary : theme.colors.inputBg};
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme, $selected }) => 
+      $selected ? theme.colors.primary : theme.colors.hover};
   }
 `;
 
