@@ -5,7 +5,7 @@ export const ContainerStyled = styled.div`
   min-height: 100vh;
   background-color: ${({ theme }) => theme.colors.background};
   justify-content: center;
-  padding: 0 ${({ theme }) => theme.spacing["2xl"]};
+  padding: 0 ${({ theme }) => theme.spacing.xxl};
 `;
 
 export const ContentWrapperStyled = styled.div`
@@ -34,8 +34,8 @@ export const MainContentStyled = styled.main`
 `;
 
 export const PageTitleStyled = styled.h1`
-  font-size: ${({ theme }) => theme.fontSize["2xl"]};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-  color: ${({ theme }) => theme.colors.text.primary};
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  margin-bottom: ${({ theme }) => theme.spacing.md};
 `;

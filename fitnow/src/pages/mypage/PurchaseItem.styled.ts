@@ -19,8 +19,18 @@ export const ProductImageStyled = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${({ theme }) => theme.fontSize["2xl"]};
   flex-shrink: 0;
+`;
+
+export const ProductImageTag = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+`;
+
+export const ProductImageEmoji = styled.div`
+  font-size: ${({ theme }) => theme.fontSize["2xl"]};
 `;
 
 export const ProductInfoStyled = styled.div`

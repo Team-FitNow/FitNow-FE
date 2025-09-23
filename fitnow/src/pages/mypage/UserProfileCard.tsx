@@ -8,11 +8,6 @@ import {
   EmailStyled,
   ButtonGroupStyled,
   ButtonStyled,
-  ActionSectionStyled,
-  ActionItemStyled,
-  ActionIconStyled,
-  ActionTextStyled,
-  NoticeBadgeStyled,
 } from "./UserProfileCard.styled";
 import { UserIcon } from "./UserIcon";
 import { ProfileUploadModal } from "./ProfileUploadModal";
@@ -63,18 +58,11 @@ export const UserProfileCard: React.FC<UserProfileCardProps> = ({
         </ButtonGroupStyled>
       </ProfileCardStyled>
 
-      <ActionSectionStyled>
-        <ActionItemStyled style={{ position: "relative" }}>
-          <ActionIconStyled>📄</ActionIconStyled>
-          <ActionTextStyled>공지사항</ActionTextStyled>
-          <NoticeBadgeStyled />
-        </ActionItemStyled>
-      </ActionSectionStyled>
 
       <ProfileUploadModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        currentImage={styleImage}
+        currentImage={styleImage ?? undefined}
         onImageChange={setStyleImage}
       />
     </ProfileSectionStyled>

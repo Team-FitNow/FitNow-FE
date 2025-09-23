@@ -1,8 +1,9 @@
 import React from "react";
-import { PurchaseItemStyled, ProductImageStyled, ProductInfoStyled, ProductNameStyled, ProductSizeStyled, StatusStyled } from "./PurchaseItem.styled";
+import { PurchaseItemStyled, ProductImageStyled, ProductImageTag, ProductImageEmoji, ProductInfoStyled, ProductNameStyled, ProductSizeStyled, StatusStyled } from "./PurchaseItem.styled";
 
 interface PurchaseItemProps {
-  image: string;
+  imageUrl?: string;
+  image?: string;
   name: string;
   size?: string;
   status: string;
@@ -10,6 +11,7 @@ interface PurchaseItemProps {
 }
 
 export const PurchaseItem: React.FC<PurchaseItemProps> = ({
+  imageUrl,
   image,
   name,
   size,
@@ -18,7 +20,13 @@ export const PurchaseItem: React.FC<PurchaseItemProps> = ({
 }) => {
   return (
     <PurchaseItemStyled>
-      <ProductImageStyled>{image}</ProductImageStyled>
+      <ProductImageStyled>
+        {imageUrl ? (
+          <ProductImageTag src={imageUrl} alt={name} />
+        ) : (
+          <ProductImageEmoji>{image}</ProductImageEmoji>
+        )}
+      </ProductImageStyled>
       <ProductInfoStyled>
         <ProductNameStyled>{name}</ProductNameStyled>
         {size && <ProductSizeStyled>Size: {size}</ProductSizeStyled>}

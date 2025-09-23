@@ -40,4 +40,9 @@ export const NavItemStyled = styled.a`
   &:focus {
     outline: none;
   }
+
+  &.active {
+    color: ${({ theme }) => theme.colors.text.primary};
+    font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  }
 `;

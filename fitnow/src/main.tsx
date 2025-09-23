@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme/theme";
 import App from "./App";
+import MyPage from "./pages/mypage/MyPage";
+import FavoritesPage from "./pages/mypage/FavoritesPage";
 import MainPage from "./pages/Main/MainPage";
 import EmptyPage from "./pages/Main/EmptyPage";
 import LoginPage from './pages/login/LoginPage'
@@ -21,6 +23,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<App />}>
             <Route index element={<MainPage />} />
             <Route path="empty" element={<EmptyPage />} />
+            <Route path="mypage" element={<MyPage />} />
+            <Route path="mypage/favorites" element={<FavoritesPage />} />
             {/*<Route path="/" element={<LoginPage />} />*/}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/find-id" element={<FindIdPage />} />
