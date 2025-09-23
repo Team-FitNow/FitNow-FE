@@ -8,60 +8,54 @@ export const HeaderContainer = styled.header`
   z-index: 1000;
 
   width: 100%;
-  background-color: #fff; /* 배경 흰색 */
+  background-color: #fff;
   color: #000000;
 
   font-family: sans-serif;
 `;
 
 export const HeaderTop = styled.div`
-  position: relative;
-  height: 80px;
+  height: 7vh;
   width: 100%;
-  margin: 0;
-  padding: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 `;
 
 export const Logo = styled.h1`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 42px;
-  font-weight: 800;
+  font-size: 2vw;
+  font-weight: 600;
   margin: 0;
   white-space: nowrap;
+  font-family: "Calisto MT", serif;
 `;
 
 export const LeftNav = styled.ul`
   position: absolute;
-  right: 1580px;
+  left: 2%;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
-  gap: 24px;
+  gap: 2vw;
   list-style: none;
   margin: 0;
   padding: 0;
-  font-size: 15px;
+  font-size: 0.95vw;
   align-items: center;
 `;
 
 export const RightNav = styled.ul`
   position: absolute;
+  right: 2%;
   top: 50%;
-  left: 1580px;
   transform: translateY(-50%);
   display: flex;
-  gap: 24px;
+  gap: 2vw;
   list-style: none;
   margin: 0;
   padding: 0;
-  font-size: 15px;
+  font-size: 0.95vw;
   align-items: center;
 `;
 
@@ -71,19 +65,19 @@ export const NavItem = styled.li`
 `;
 
 export const HeaderBottom = styled.div`
-  border-top: 1px solid #dfdfdfff;
-  border-bottom: 1px solid #dfdfdfff;
-  padding: 12px 0;
+  border-top: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dfdfdf;
+  padding: 1.2vh 0;
 `;
 
 export const CategoryMenu = styled.ul`
   display: flex;
   justify-content: center;
-  gap: 78px;
+  gap: 4vw;
   list-style: none;
-  padding: 0 24;
+  padding: 0;
   margin: 0;
-  font-size: 15px;
+  font-size: 0.9vw;
 `;
 
 export const HighlightItem = styled(NavItem)`
