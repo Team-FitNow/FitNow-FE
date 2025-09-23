@@ -24,7 +24,7 @@ export const HeaderTop = styled.div`
 `;
 
 export const Logo = styled.h1`
-  font-size: 2vw;
+  font-size: 1.9vw;
   font-weight: 600;
   margin: 0;
   white-space: nowrap;
