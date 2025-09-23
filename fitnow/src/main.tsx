@@ -11,8 +11,7 @@ import FindIdPage from "./pages/login/FindIdPage";
 import FindIdResultPage from "./pages/login/FindIdResultPage";
 import SignupPage from "./pages/login/SignupPage";
 import ResetPasswordPage from "./pages/login/ResetPasswordPage";
-import { CartPage } from "./cart/CartPage";
-import ProductDetailPage from "./pages/product/ProductDetailPage";
+import { CartPage } from "./pages/cart/CartPage";
 import "./index.css";
 
 
@@ -26,12 +25,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Route path="empty" element={<EmptyPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/find-id" element={<FindIdPage />} />
             <Route path="/find-id-result" element={<FindIdResultPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/product/:id" element={<ProductDetailPage />} />
-          </Route>
+            <Route path="/cart" element={<CartPage />} />
+        </Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
