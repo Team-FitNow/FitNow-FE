@@ -12,13 +12,11 @@ const brandCategories = [
 ];
 
 const MainHeader: React.FC = () => {
-  // 현재 활성화된 메뉴와 카테고리를 상태로 관리
   const [activeNav] = useState("브랜드");
   const [activeCategory, setActiveCategory] = useState("전체");
 
   return (
     <S.MainHeaderContainer>
-      {/* "브랜드"가 선택되었을 때만 하위 카테고리 메뉴 표시 */}
       {activeNav === "브랜드" && (
         <S.SubNavContainer>
           <S.BrandTitle>ASICS</S.BrandTitle>

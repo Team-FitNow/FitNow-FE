@@ -1,7 +1,7 @@
 // src/components/Footer/Footer.tsx
 
 import React from "react";
-import { FooterContainer, FooterText, FooterLinks } from "./styles";
+import { FooterContainer, FooterText, FooterLinks } from "./Footer.styled";
 
 const Footer: React.FC = () => {
   return (

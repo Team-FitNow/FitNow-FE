@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
 export const PageStyled = styled.div`
-  min-height: 100dvh;
+  min-height: calc(100dvh - 200px);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: ${({ theme }) => theme.spacing.lg} 0;
 `;
 
 export const CardStyled = styled.div`

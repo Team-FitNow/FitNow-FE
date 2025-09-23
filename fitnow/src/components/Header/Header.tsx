@@ -8,7 +8,8 @@ import {
   NavItem,
   CategoryMenu,
   HighlightItem,
-} from "./styles";
+} from "./Header.styled";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -21,13 +22,31 @@ const Header = () => {
           <NavItem>에디토리얼</NavItem>
         </LeftNav>
 
-        <Logo>FitNow</Logo>
+        <Logo>
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+            FitNow
+          </Link>
+        </Logo>
 
         <RightNav>
           <NavItem>검색</NavItem>
           <NavItem>관심목록</NavItem>
-          <NavItem>장바구니</NavItem>
-          <NavItem>로그인</NavItem>
+          <NavItem>
+            <Link
+              to="/cart"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              장바구니
+            </Link>
+          </NavItem>
+          <NavItem>
+            <Link
+              to="/login"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              로그인
+            </Link>
+          </NavItem>
         </RightNav>
       </HeaderTop>
 
