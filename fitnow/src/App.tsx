@@ -20,23 +20,6 @@ const ContentWrap = styled.main`
 
 const App: React.FC = () => {
   return (
-<!--     <BrowserRouter>
-
-      {/* 네비게이션 */}
-      <nav style={{ margin: "1rem 0" }}>
-        <Link to="/" style={{ marginRight: "1rem" }}>
-          Home
-        </Link>
-        <Link to="/cart">Cart</Link>
-      </nav>
-
-      {/* 라우터 */}
-      <Routes>
-        <Route path="/cart" element={<Cart />} />
-      </Routes>
-    </BrowserRouter>
-  );
-} -->
     <AppContainer>
       <Header />
       <ContentWrap>
