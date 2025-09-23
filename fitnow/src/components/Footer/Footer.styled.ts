@@ -11,34 +11,35 @@ export const FooterContainer = styled.footer`
   color: #000000;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #dfdfdf;
   z-index: 999;
 
-  padding: 12px 16px;
+  padding: 1vh 2vw 2vh;
   text-align: center;
 `;
 
 export const FooterText = styled.p`
-  font-size: 13px;
+  font-size: 0.85vw;
   margin: 0;
   font-weight: 400;
 
   @media (max-width: 768px) {
-    font-size: 12px;
+    font-size: 2.5vw;
   }
 `;
 
 export const FooterLinks = styled.p`
-  font-size: 11px;
+  font-size: 0.75vw;
   font-weight: 300;
-  margin: 4px 0 0;
+  margin: 0.5vh 0 0;
   line-height: 1.5;
   white-space: pre-wrap;
 
   @media (max-width: 768px) {
-    font-size: 11px;
+    font-size: 2.2vw;
   }
 `;

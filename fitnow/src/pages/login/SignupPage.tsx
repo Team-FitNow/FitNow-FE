@@ -8,7 +8,8 @@ import {
   FieldStyled,
   LabelStyled,
   InputStyled,
-  SelectStyled,
+  GenderButtonContainer,
+  GenderButton,
   FileUploadContainer,
   FileInput,
   FileLabel,
@@ -36,6 +37,13 @@ const SignupPage: React.FC = () => {
     }));
   };
 
+  const handleGenderChange = (gender: string) => {
+    setFormData(prev => ({
+      ...prev,
+      gender: gender,
+    }));
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.type === "image/jpeg") {
@@ -51,9 +59,9 @@ const SignupPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // 필수 필드 검증
-    if (!formData.id || !formData.password || !formData.birthDate || !formData.height || !formData.weight || !formData.userId || !formData.gender || !formData.fullBodyPhoto) {
-      alert("모든 필드를 입력해주세요.");
+    // 필수 필드 검증 (전신사진 제외)
+    if (!formData.id || !formData.password || !formData.birthDate || !formData.height || !formData.weight || !formData.userId || !formData.gender) {
+      alert("필수 필드를 모두 입력해주세요.");
       return;
     }
 
@@ -139,29 +147,35 @@ const SignupPage: React.FC = () => {
 
           <FieldStyled>
             <LabelStyled>성별 *</LabelStyled>
-            <SelectStyled
-              value={formData.gender}
-              onChange={(e) => handleInputChange("gender", e.target.value)}
-              required
-            >
-              <option value="">성별을 선택하세요</option>
-              <option value="male">남성</option>
-              <option value="female">여성</option>
-            </SelectStyled>
+            <GenderButtonContainer>
+              <GenderButton
+                type="button"
+                $selected={formData.gender === "male"}
+                onClick={() => handleGenderChange("male")}
+              >
+                남성
+              </GenderButton>
+              <GenderButton
+                type="button"
+                $selected={formData.gender === "female"}
+                onClick={() => handleGenderChange("female")}
+              >
+                여성
+              </GenderButton>
+            </GenderButtonContainer>
           </FieldStyled>
 
           <FieldStyled>
-            <LabelStyled>전신 사진 *</LabelStyled>
+            <LabelStyled>전신 사진 (선택 사항)</LabelStyled>
             <FileUploadContainer>
               <FileInput
                 type="file"
                 id="fullBodyPhoto"
                 accept=".jpg,.jpeg"
                 onChange={handleFileChange}
-                required
               />
               <FileLabel htmlFor="fullBodyPhoto">
-                {formData.fullBodyPhoto ? formData.fullBodyPhoto.name : "JPG 파일을 선택하세요"}
+                {formData.fullBodyPhoto ? formData.fullBodyPhoto.name : "업로드할 파일을 선택해주세요"}
               </FileLabel>
             </FileUploadContainer>
           </FieldStyled>
