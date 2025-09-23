@@ -15,7 +15,7 @@ export const ProductCardStyled = styled.div<{ isRemoving?: boolean }>`
 
   &:not(.disable-hover):hover {
     transform: translateY(-2px);
-    box-shadow: ${({ theme }) => theme.shadows.md};
+    box-shadow: ${({ theme }) => theme.shadows.lg};
   }
 `;
 
@@ -37,13 +37,12 @@ export const ProductImage = styled.img`
   }
 `;
 
-export const BookmarkIcon = styled.div`
+export const BookmarkIcon = styled.button`
   position: absolute;
   bottom: 8px;
   right: 8px;
   width: 24px;
   height: 24px;
-  background-color: rgba(0, 0, 0, 0.7);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -53,10 +52,13 @@ export const BookmarkIcon = styled.div`
   transition: all 0.2s ease;
   pointer-events: auto;
   z-index: 1;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background-color: none;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.9);
-    transform: scale(1.1);
+    transform: scale(1.2);
   }
 `;
 

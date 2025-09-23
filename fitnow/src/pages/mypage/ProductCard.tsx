@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   ProductCardStyled,
   ProductImageContainer,
@@ -12,6 +12,7 @@ import {
   Price,
   PriceLabel,
 } from "./ProductCard.styled";
+import { LikeIcon } from "./LikeIcon";
 
 interface ProductCardProps {
   image: string;
@@ -34,8 +35,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     return price.toLocaleString("ko-KR");
   };
 
-  const [isRemoving, setIsRemoving] = useState(false);
-  const removeTimeoutRef = useRef<number | null>(null);
+  const [isRemoving] = useState(false);
+
+  const [liked, setLiked] = useState(true);
 
   return (
     <ProductCardStyled data-card isRemoving={isRemoving}>
@@ -50,15 +52,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             const card = (e.currentTarget.closest('[data-card]') as HTMLElement);
             if (card) card.classList.remove('disable-hover');
           }}
+          aria-label={liked ? "관심 해제" : "관심 추가"}
           onClick={(e) => {
             e.stopPropagation();
             if (isRemoving) return;
-            setIsRemoving(true);
-            removeTimeoutRef.current = window.setTimeout(() => {
-              onRemove?.();
-            }, 200);
+            setLiked((prev) => {
+              const next = !prev;
+              if (!next) {
+                onRemove?.();
+              }
+              return next;
+            });
           }}
-        >🔖</BookmarkIcon>
+        >
+          <LikeIcon isFilled={liked} size={14} color="#ef4444" strokeColor="#fff" />
+        </BookmarkIcon>
       </ProductImageContainer>
       
       <ProductInfo>

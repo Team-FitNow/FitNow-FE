@@ -1,7 +1,6 @@
 import React from "react";
 import { PurchaseHistoryStyled, SectionTitleStyled, StatsGridStyled, StatCardStyled, StatNumberStyled, StatLabelStyled, PurchaseListStyled } from "./PurchaseHistory.styled";
-import { PurchaseItem } from "./index";
-
+import { PurchaseItem } from "./PurchaseItem";
 interface PurchaseStats {
   total: number;
   shipping: number;
@@ -15,15 +14,15 @@ interface PurchaseHistoryProps {
 const MOCK_PURCHASES = [
   {
     id: 1,
-    image: "👜",
+    imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400",
     name: "Supreme Mesh Mini Duffle Bag Black - 25SS",
-    size: undefined,
+    size: '275mm',
     status: "기한만료" as const,
     statusColor: "error" as const,
   },
   {
     id: 2,
-    image: "👕",
+    imageUrl: "https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=400",
     name: "Ader Error Sig; TRS Tag T-Shirt 01 Noir",
     size: "L",
     status: "배송완료" as const,
@@ -31,9 +30,9 @@ const MOCK_PURCHASES = [
   },
   {
     id: 3,
-    image: "👕",
+    imageUrl: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=400",
     name: "Stussy Pigment Dyed Classic Gear T-Shirt Natural",
-    size: undefined,
+    size: 'M',
     status: "기한만료" as const,
     statusColor: "error" as const,
   },
@@ -69,7 +68,7 @@ export const PurchaseHistory: React.FC<PurchaseHistoryProps> = ({
         {MOCK_PURCHASES.map((purchase) => (
           <PurchaseItem
             key={purchase.id}
-            image={purchase.image}
+            imageUrl={purchase.imageUrl}
             name={purchase.name}
             size={purchase.size}
             status={purchase.status}
