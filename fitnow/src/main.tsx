@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme/theme";
 import App from "./App";
+
 import MainPage from "./pages/main/MainPage";
 import EmptyPage from "./pages/main/EmptyPage";
 import LoginPage from "./pages/login/LoginPage";
@@ -12,7 +13,8 @@ import FindIdResultPage from "./pages/login/FindIdResultPage";
 import SignupPage from "./pages/login/SignupPage";
 import CartPage from "./pages/cart";
 import ResetPasswordPage from "./pages/login/ResetPasswordPage";
-import PDP_ScreenshotMatch from "./pages/PDP";
+import ProductDetailPage from "./pages/product/ProductDetailPage";
+
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -29,7 +31,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/find-id-result" element={<FindIdResultPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/product/:id" element={<PDP_ScreenshotMatch />} />
+            <Route path="/product/:id" element={<ProductDetailPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
