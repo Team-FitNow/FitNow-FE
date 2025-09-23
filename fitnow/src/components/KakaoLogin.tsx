@@ -3,10 +3,9 @@ import styled from 'styled-components';
 
 const KakaoButton = styled.button`
   width: 100%;
-  height: 36px;
+  height: 40px;
   background-color: #FEE500;
   border: none;
-  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
