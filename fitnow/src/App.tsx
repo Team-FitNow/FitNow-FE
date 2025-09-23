@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import styled from "styled-components"; // Styled-Components 사용
+import styled from "styled-components";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 

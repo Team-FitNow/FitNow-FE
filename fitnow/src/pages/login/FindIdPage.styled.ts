@@ -1,17 +1,27 @@
 import styled from "styled-components";
 
 export const PageStyled = styled.div`
-  min-height: 100dvh;
+  min-height: calc(100dvh - 200px);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: ${({ theme }) => theme.spacing.lg} 0;
+  box-sizing: border-box;
 `;
 
 export const CardStyled = styled.div`
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
   padding: ${({ theme }) => theme.spacing.lg};
   background: ${({ theme }) => theme.colors.surface};
+  margin: 0 auto;
+  flex-shrink: 0;
+  position: relative;
+  transform: translateX(-170px);
+
+  @media (min-width: 640px) {
+    padding: ${({ theme }) => theme.spacing.xl};
+  }
 `;
 
 export const TitleStyled = styled.h2`
@@ -24,12 +34,12 @@ export const TitleStyled = styled.h2`
 
 export const FormStyled = styled.form`
   display: grid;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 export const FieldStyled = styled.div`
   display: grid;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 export const LabelStyled = styled.label`
@@ -42,23 +52,31 @@ export const PhoneInputContainer = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing.sm};
   align-items: center;
+  justify-content: center;
+  position: relative;
 `;
 
 export const PhoneInput = styled.input`
   flex: 1;
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  height: 48px;
+  padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.lg};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 0;
+  border-radius: ${({ theme }) => theme.radii.md};
   font-size: ${({ theme }) => theme.fontSizes.md};
   outline: none;
   transition: box-shadow 0.15s ease, border-color 0.15s ease;
   color: ${({ theme }) => theme.colors.textPrimary};
   background: ${({ theme }) => theme.colors.inputBg};
   text-align: center;
+  box-sizing: border-box;
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.focus};
     box-shadow: 0 0 0 3px ${({ theme }) => theme.focusRing};
+  }
+
+  &:nth-child(2) {
+    position: relative;
   }
 `;
 
@@ -70,14 +88,15 @@ export const VerificationContainer = styled.div`
 
 export const VerificationInput = styled.input`
   flex: 1;
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  height: 48px;
+  padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.lg};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 0;
-  font-size: ${({ theme }) => theme.fontSizes.md};
+    font-size: ${({ theme }) => theme.fontSizes.md};
   outline: none;
   transition: box-shadow 0.15s ease, border-color 0.15s ease;
   color: ${({ theme }) => theme.colors.textPrimary};
   background: ${({ theme }) => theme.colors.inputBg};
+  box-sizing: border-box;
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.focus};
@@ -86,14 +105,15 @@ export const VerificationInput = styled.input`
 `;
 
 export const VerifyButton = styled.button`
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  height: 48px;
+  padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.lg};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 0;
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   color: ${({ theme }) => theme.colors.textPrimary};
   background: ${({ theme }) => theme.colors.surface};
   cursor: pointer;
   transition: background 0.15s ease;
+  white-space: nowrap;
 
   &:hover {
     background: ${({ theme }) => theme.colors.hover};
@@ -102,17 +122,16 @@ export const VerifyButton = styled.button`
 
 export const ButtonContainer = styled.div`
   display: grid;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.spacing.md};
   margin-top: ${({ theme }) => theme.spacing.lg};
 `;
 
 export const SendButton = styled.button`
   width: 100%;
-  height: 36px;
+  height: 40px;
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 0;
   font-weight: 500;
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   color: ${({ theme }) => theme.colors.textPrimary};
   background: ${({ theme }) => theme.colors.surface};
   cursor: pointer;
@@ -125,18 +144,13 @@ export const SendButton = styled.button`
 
 export const NextButton = styled.button<{ $disabled?: boolean }>`
   width: 100%;
-  height: 36px;
+  height: 40px;
   border: 0;
-  border-radius: 0;
   font-weight: 500;
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   color: ${({ theme }) => theme.colors.onPrimary};
   background: ${({ $disabled, theme }) => 
     $disabled ? theme.colors.border : theme.colors.primary};
-  border: none;
-  border-radius: 0;
-  font-weight: 500;
-  font-size: ${({ theme }) => theme.fontSizes.sm};
   cursor: ${({ $disabled }) => $disabled ? 'not-allowed' : 'pointer'};
   transition: background 0.15s ease;
 

@@ -1,24 +1,17 @@
-// 1) React / 라이브러리
 import styled from "styled-components";
 
-// 2) 절대경로 import
-
-// 3) 상대경로 import (부모 → 자식)
-
-// 4) styled-components 마지막 (현재 파일 자체)
-
-// 모든 색상/간격/반경은 theme 사용 (하드코딩 금지)
 export const PageStyled = styled.div`
-  min-height: 100dvh;
+  min-height: calc(100dvh - 200px);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: ${({ theme }) => theme.spacing.lg} 0;
 `;
 
 export const CardStyled = styled.div`
   width: 100%;
-  max-width: 420px;
-  padding: ${({ theme }) => theme.spacing.lg};
+  max-width: 480px;
+  padding: ${({ theme }) => theme.spacing.xl};
   background: ${({ theme }) => theme.colors.surface};
 
   @media (min-width: 640px) {
@@ -29,7 +22,7 @@ export const CardStyled = styled.div`
 export const TitleStyled = styled.h2`
   font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: 700;
-  margin: 0 0 ${({ theme }) => theme.spacing.md};
+  margin: 0 0 ${({ theme }) => theme.spacing.lg};
   color: ${({ theme }) => theme.colors.textPrimary};
   text-align: left;
 `;
@@ -44,12 +37,12 @@ export const ErrorTextStyled = styled.p`
 
 export const FormStyled = styled.form`
   display: grid;
-  gap: ${({ theme }) => theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.lg};
 `;
 
 export const FieldStyled = styled.div`
   display: grid;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 export const LabelStyled = styled.label`
@@ -59,8 +52,9 @@ export const LabelStyled = styled.label`
 `;
 
 export const InputStyled = styled.input`
-  width: 92%;
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  width: 100%;
+  height: 48px;
+  padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.lg};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.md};
   font-size: ${({ theme }) => theme.fontSizes.md};
@@ -68,6 +62,7 @@ export const InputStyled = styled.input`
   transition: box-shadow 0.15s ease, border-color 0.15s ease;
   color: ${({ theme }) => theme.colors.textPrimary};
   background: ${({ theme }) => theme.colors.inputBg};
+  box-sizing: border-box;
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.focus};
@@ -121,16 +116,16 @@ export const LinkGroupStyled = styled.div`
 
 export const ActionsStyled = styled.div`
   display: grid;
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: ${({ theme }) => theme.spacing.md};
   margin-top: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const PrimaryButtonStyled = styled.button<{ $loading?: boolean }>`
   width: 100%;
-  height: 36px;
+  height: 40px;
   border: 0;
-  border-radius: 0;
   font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSizes.md};
   color: ${({ theme }) => theme.colors.onPrimary};
   background: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
@@ -150,12 +145,12 @@ export const PrimaryButtonStyled = styled.button<{ $loading?: boolean }>`
 
 export const OutlineButtonStyled = styled.button`
   width: 100%;
-  height: 36px;
+  height: 40px;
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.textPrimary};
   border: 1px solid ${({ theme }) => theme.colors.textPrimary};
-  border-radius: 0;
   font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSizes.md};
   cursor: pointer;
   transition: background 0.15s ease;
 
@@ -165,7 +160,7 @@ export const OutlineButtonStyled = styled.button`
 `;
 
 export const NoticeStyled = styled.p`
-  margin-top: ${({ theme }) => theme.spacing.md};
+  margin-top: ${({ theme }) => theme.spacing.lg};
   text-align: center;
   font-size: ${({ theme }) => theme.fontSizes.sm};
   color: ${({ theme }) => theme.colors.textSecondary};
