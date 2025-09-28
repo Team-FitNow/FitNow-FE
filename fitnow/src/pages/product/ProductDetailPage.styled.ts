@@ -5,11 +5,6 @@ export const Page = styled.div`
   font-family: ui-sans-serif, system-ui, -apple-system, "Noto Sans KR", Roboto, Helvetica, Arial, sans-serif;
 `;
 
-export const TopBar = styled.div`
-  height:44px; display:flex; align-items:center; justify-content:space-between; padding:0 16px; border-bottom:1px solid #eee;
-  .right{display:flex; gap:14px; color:#666}
-`;
-
 export const Container = styled.div`
   max-width: 1280px; margin:0 auto; padding: 24px 16px 80px;
 `;
