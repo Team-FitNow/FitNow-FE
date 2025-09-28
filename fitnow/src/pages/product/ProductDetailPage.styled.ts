@@ -354,6 +354,7 @@ export const SectionHead = styled.div`
 
 export const SectionBody = styled.div`
   padding: 15px 0;
+  padding: 15px 12px;
   font-size: 13px; 
   line-height: 1.7;
   color: ${INK_SUB};

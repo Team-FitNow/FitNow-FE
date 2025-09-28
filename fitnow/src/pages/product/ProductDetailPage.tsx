@@ -5,7 +5,7 @@ import {
   PriceRow, SizeGrid, SizePill, FitInfo, Links, CTA, BigButton, IconBtn,
   Accordion, Section, SectionHead, SectionBody, CartButton, BuyButton, Track
 } from "./ProductDetailPage.styled";
-import { PRODUCT, BRAND_PRODUCTS, RECENT_PRODUCTS, WITH_ITEM, INVENTORY, currency, type Size } from './data';
+import { PRODUCT, BRAND_PRODUCTS, RECENT_PRODUCTS, WITH_ITEMS, INVENTORY, currency, type Size } from './data';
 
 const WithItemSection = lazy(() => import("./WithItemSection"));
 const BrandProductsSection = lazy(() => import("./BrandProductsSection"));
@@ -304,7 +304,7 @@ export default function ProductDetailPage() {
           </Panel>
         </Main>
 
-        <Suspense fallback={null}><WithItemSection item={WITH_ITEM} /></Suspense>
+        <Suspense fallback={null}><WithItemSection items={WITH_ITEMS} /></Suspense>
         <Suspense fallback={null}><BrandProductsSection items={BRAND_PRODUCTS} /></Suspense>
         <Suspense fallback={null}><RecentProductsSection items={RECENT_PRODUCTS} /></Suspense>
       </Container>
