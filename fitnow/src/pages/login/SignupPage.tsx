@@ -52,7 +52,7 @@ const SignupPage: React.FC = () => {
         fullBodyPhoto: file,
       }));
     } else {
-      alert("JPG 파일만 업로드 가능합니다.");
+      alert("업로드할 이미지를 선택해주세요.");
     }
   };
 
