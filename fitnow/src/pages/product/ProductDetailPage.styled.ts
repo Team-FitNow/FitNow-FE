@@ -65,65 +65,64 @@ export const Viewer = styled.div`
   .hit.right { right: 0; }
 
   /* 도트 인디케이터 (이전 UI와 동일 비주얼) */
-.dots{
-  position:absolute;
-  left:50%;
-  bottom:10px;
-  transform:translateX(-50%);
-  display:flex;
-  gap:6px;
-  z-index:4;                 /* .hit(3)보다 위 */
-  padding:4px 6px;           /* 캡슐 패딩 */
-  background:rgba(255,255,255,.7);
-  border-radius:999px;
-  border:0;
-  margin:0;
-}
+  .dots{
+    position:absolute;
+    left:50%;
+    bottom:10px;
+    transform:translateX(-50%);
+    display:flex;
+    gap:6px;
+    z-index:4;                 /* .hit(3)보다 위 */
+    padding:4px 6px;           /* 캡슐 패딩 */
+    background:rgba(255,255,255,.7);
+    border-radius:999px;
+    border:0;
+    margin:0;
+  }
 
-.dot-wrap{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-}
+  .dot-wrap{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+  }
 
-/* 시각적으로 숨김(legend용) */
-.sr-only{
-  position:absolute !important;
-  width:1px; height:1px;
-  padding:0; margin:-1px;
-  overflow:hidden; clip:rect(0,0,1px,1px);
-  white-space:nowrap; border:0;
-}
+  /* 시각적으로 숨김(legend용) */
+  .sr-only{
+    position:absolute !important;
+    width:1px; height:1px;
+    padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,1px,1px);
+    white-space:nowrap; border:0;
+  }
 
-/* 라디오 입력은 보이지만 접근성 유지 */
-.dot-wrap input{
-  position:absolute;
-  opacity:0;
-  width:1px; height:1px;
-  pointer-events:none;
-}
+  /* 라디오 입력은 보이지만 접근성 유지 */
+  .dot-wrap input{
+    position:absolute;
+    opacity:0;
+    width:1px; height:1px;
+    pointer-events:none;
+  }
 
-/* 점(6px) – 이전 UI와 동일 */
-.dot{
-  width:6px; height:6px;
-  border-radius:50%;
-  border:1px solid #cfd4da;
-  background:#fff;
-  display:block;
-}
-.dot.active{
-  background:#111827;
-  border-color:#111827;
-  transform:scale(1.05);
-}
+  /* 점(6px) – 이전 UI와 동일 */
+  .dot{
+    width:6px; height:6px;
+    border-radius:50%;
+    border:1px solid #cfd4da;
+    background:#fff;
+    display:block;
+  }
+  .dot.active{
+    background:#111827;
+    border-color:#111827;
+    transform:scale(1.05);
+  }
 
-/* 키보드 포커스 */
-.dot-wrap input:focus-visible + .dot{
-  box-shadow:0 0 0 2px rgba(17,24,39,.25);
-}
+  /* 키보드 포커스 */
+  .dot-wrap input:focus-visible + .dot{
+    box-shadow:0 0 0 2px rgba(17,24,39,.25);
+  }
 `;
-
 
 export const Track = styled.div<{ $idx: number; $skip?: boolean }>`
   display: flex;
@@ -135,7 +134,6 @@ export const Track = styled.div<{ $idx: number; $skip?: boolean }>`
   transform: translateX(-${({ $idx }) => $idx * 100}%);
   transition: ${({ $skip }) => ($skip ? "none" : "transform 0.35s ease")};
 `;
-
 
 export const Panel = styled.aside``;
 
@@ -152,24 +150,23 @@ export const PanelTop = styled.div`
     letter-spacing: 0.2px;
     color: ${INK_SUB};
   }
+
   .brand-bookmark {
     border: 0;
     background: transparent;
     padding: 4px;
     line-height: 0;
-    color: ${MUTED_LIGHT};
     cursor: pointer;
     display: grid;
     place-items: center;
-    svg {
-      stroke: currentColor;
-    }
-    &:hover {
-      color: ${INK_SUB};
-    }
-    &:active {
-      color: ${INK};
-    }
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+
+    /* 아이콘 이미지를 사용할 때 규격 고정 */
+    img { width: 18px; height: 18px; display: block; }
+
+    &:hover { opacity: .85; }
+    &:active { transform: scale(.96); }
   }
 `;
 
@@ -319,6 +316,9 @@ export const IconBtn = styled.button`
   display: grid;
   place-items: center;
   border-radius: 2px;
+
+  /* 아이콘 이미지를 사용할 때 규격 고정 */
+  img { width: 18px; height: 18px; display: block; }
 `;
 
 /* ── Accordion ─────────────────────────────────────────────────────── */
@@ -353,7 +353,6 @@ export const SectionHead = styled.div`
 `;
 
 export const SectionBody = styled.div`
-  padding: 15px 0;
   padding: 15px 12px;
   font-size: 13px; 
   line-height: 1.7;

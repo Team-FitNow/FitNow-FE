@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, lazy, Suspense } from "react";
-import { Bookmark } from "lucide-react";
 import {
   Page, Container, Main, Viewer, Panel, PanelTop, Title, SubTitle, SmallText,
   PriceRow, SizeGrid, SizePill, FitInfo, Links, CTA, BigButton, IconBtn,
   Accordion, Section, SectionHead, SectionBody, CartButton, BuyButton, Track
 } from "./ProductDetailPage.styled";
 import { PRODUCT, BRAND_PRODUCTS, RECENT_PRODUCTS, WITH_ITEMS, INVENTORY, currency, type Size } from './data';
+import { getWishlistIconSrc, getWishlistToast, type WishlistKind } from "@/utils/wishlist";
 
 const WithItemSection = lazy(() => import("./WithItemSection"));
 const BrandProductsSection = lazy(() => import("./BrandProductsSection"));
@@ -133,13 +133,17 @@ export default function ProductDetailPage() {
     alert(`장바구니 담기: ${PRODUCT.name} / ${size}`);
   };
 
-  const toggleProductWishlist = () => {
-    setIsInProductWishlist(v => !v);
-    alert(!isInProductWishlist ? "상품 위시리스트에 추가되었습니다." : "상품 위시리스트에서 제거되었습니다.");
-  };
-  const toggleBrandWishlist = () => {
-    setIsInBrandWishlist(v => !v);
-    alert(!isInBrandWishlist ? "브랜드 위시리스트에 추가되었습니다." : "브랜드 위시리스트에서 제거되었습니다.");
+  // ✅ 공통 위시리스트 토글
+  const toggleWishlist = (kind: WishlistKind) => {
+    if (kind === "product") {
+      const next = !isInProductWishlist;
+      setIsInProductWishlist(next);
+      alert(getWishlistToast("product", next));
+    } else {
+      const next = !isInBrandWishlist;
+      setIsInBrandWishlist(next);
+      alert(getWishlistToast("brand", next));
+    }
   };
 
   return (
@@ -217,8 +221,20 @@ export default function ProductDetailPage() {
           <Panel>
             <PanelTop>
               <span className="brand">{PRODUCT.brand}</span>
-              <button className="brand-bookmark" aria-label="브랜드 위시리스트" onClick={toggleBrandWishlist}>
-                <Bookmark size={18} color={isInBrandWishlist ? "#111827" : "currentColor"} />
+              <button
+                className="brand-bookmark"
+                type="button"
+                aria-label="브랜드 위시리스트"
+                aria-pressed={isInBrandWishlist}
+                onClick={() => toggleWishlist("brand")}
+              >
+                <img
+                  src={getWishlistIconSrc("brand", isInBrandWishlist)}
+                  alt=""
+                  width={18}
+                  height={18}
+                  draggable={false}
+                />
               </button>
             </PanelTop>
 
@@ -268,15 +284,35 @@ export default function ProductDetailPage() {
                 <>
                   <CartButton onClick={addToCart}>장바구니</CartButton>
                   <BuyButton onClick={() => alert("구매하기")} $disabled={false}>구매하기</BuyButton>
-                  <IconBtn aria-label="상품 위시리스트" onClick={toggleProductWishlist}>
-                    <Bookmark size={18} color={isInProductWishlist ? "#111827" : "#9CA3AF"} />
+                  <IconBtn
+                    aria-label="상품 위시리스트"
+                    aria-pressed={isInProductWishlist}
+                    onClick={() => toggleWishlist("product")}
+                  >
+                    <img
+                      src={getWishlistIconSrc("product", isInProductWishlist)}
+                      alt=""
+                      width={18}
+                      height={18}
+                      draggable={false}
+                    />
                   </IconBtn>
                 </>
               ) : (
                 <>
                   <BigButton $disabled>사이즈를 선택해주세요.</BigButton>
-                  <IconBtn aria-label="상품 위시리스트" onClick={toggleProductWishlist}>
-                    <Bookmark size={18} color={isInProductWishlist ? "#111827" : "#9CA3AF"} />
+                  <IconBtn
+                    aria-label="상품 위시리스트"
+                    aria-pressed={isInProductWishlist}
+                    onClick={() => toggleWishlist("product")}
+                  >
+                    <img
+                      src={getWishlistIconSrc("product", isInProductWishlist)}
+                      alt=""
+                      width={18}
+                      height={18}
+                      draggable={false}
+                    />
                   </IconBtn>
                 </>
               )}
