@@ -12,7 +12,7 @@ export const LikeIcon: React.FC<LikeIconProps> = ({
   size = 18,
   color = "currentColor",
   strokeColor = "currentColor",
-}) => {
+  }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -21,9 +21,7 @@ export const LikeIcon: React.FC<LikeIconProps> = ({
       height={size}
       fill={isFilled ? color : "none"}
       stroke={strokeColor}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
+       strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"
       aria-hidden
       focusable={false}
     >

@@ -5,10 +5,14 @@ export const PurchaseItemStyled = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.md};
   padding: ${({ theme }) => theme.spacing.md};
-  background-color: ${({ theme }) => theme.colors.background};
-  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  box-shadow: ${({ theme }) => theme.shadows.sm};
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${({ theme }) => theme.shadows.lg};
+  }
 `;
 
 export const ProductImageStyled = styled.div`
@@ -52,7 +56,7 @@ export const ProductSizeStyled = styled.span`
   color: ${({ theme }) => theme.colors.text.secondary};
 `;
 
-export const StatusStyled = styled.span<{ $statusColor: "error" | "secondary" }>`
+export const StatusStyled = styled.span<{ $statusColor: "배송중" | "배송완료" }>`
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme, $statusColor }) => 

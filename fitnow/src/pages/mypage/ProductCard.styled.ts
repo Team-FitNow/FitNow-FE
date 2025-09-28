@@ -3,8 +3,6 @@ import styled from "styled-components";
 export const ProductCardStyled = styled.div<{ isRemoving?: boolean }>`
   display: flex;
   flex-direction: column;
-  background-color: ${({ theme }) => theme.colors.background};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
   cursor: pointer;
@@ -88,18 +86,6 @@ export const ProductName = styled.h3`
   overflow: hidden;
 `;
 
-export const DeliveryBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 6px;
-  background-color: #10b981;
-  color: white;
-  border-radius: 4px;
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-  width: fit-content;
-`;
 
 export const PriceContainer = styled.div`
   display: flex;

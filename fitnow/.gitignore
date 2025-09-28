@@ -82,4 +82,4 @@ sketch
 **/*.backup.*
 **/*.back.*
 
-pnpm-lock.yaml
+**/pnpm-lock.yaml

@@ -17,24 +17,25 @@ const MOCK_PURCHASES = [
     imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400",
     name: "Supreme Mesh Mini Duffle Bag Black - 25SS",
     size: '275mm',
-    status: "기한만료" as const,
-    statusColor: "error" as const,
+    status: "배송중" as const,
+    statusColor: "ok" as const,
   },
   {
     id: 2,
+    imageUrl: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=400",
+    name: "Stussy Pigment Dyed Classic Gear T-Shirt Natural",
+    size: 'M',
+    status: "" as const,
+    statusColor: "error" as const,
+  },
+  {
+    id: 3,
     imageUrl: "https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=400",
     name: "Ader Error Sig; TRS Tag T-Shirt 01 Noir",
     size: "L",
     status: "배송완료" as const,
     statusColor: "secondary" as const,
-  },
-  {
-    id: 3,
-    imageUrl: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=400",
-    name: "Stussy Pigment Dyed Classic Gear T-Shirt Natural",
-    size: 'M',
-    status: "기한만료" as const,
-    statusColor: "error" as const,
+
   },
 ];
 
@@ -72,7 +73,7 @@ export const PurchaseHistory: React.FC<PurchaseHistoryProps> = ({
             name={purchase.name}
             size={purchase.size}
             status={purchase.status}
-            statusColor={purchase.statusColor}
+            statusColor={purchase.status}
           />
         ))}
       </PurchaseListStyled>

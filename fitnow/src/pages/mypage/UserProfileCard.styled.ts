@@ -13,8 +13,8 @@ export const ProfileCardStyled = styled.div`
   gap: ${({ theme }) => theme.spacing.md};
   padding: ${({ theme }) => theme.spacing.lg};
   background-color: ${({ theme }) => theme.colors.surface};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
   box-shadow: ${({ theme }) => theme.shadows.sm};
+  border: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
 export const AvatarStyled = styled.div`
@@ -60,10 +60,9 @@ export const ButtonGroupStyled = styled.div`
 
 export const ButtonStyled = styled.button`
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
-  background-color: ${({ theme }) => theme.colors.border};
   color: ${({ theme }) => theme.colors.text.secondary};
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border: 1px solid ${({ theme }) => theme.colors.text.secondary};
+  background-color: transparent;
   font-size: ${({ theme }) => theme.fontSize.sm};
   cursor: pointer;
   transition: all 0.2s ease;

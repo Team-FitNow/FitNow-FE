@@ -7,7 +7,7 @@ interface PurchaseItemProps {
   name: string;
   size?: string;
   status: string;
-  statusColor: "error" | "secondary";
+  statusColor: "배송중" | "배송완료";
 }
 
 export const PurchaseItem: React.FC<PurchaseItemProps> = ({

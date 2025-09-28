@@ -12,6 +12,10 @@ export const theme = {
       danger: "#ef4444",
       focus: "#111827",
       hover: "#f3f4f6",
+      status:{
+        ok:"green",
+        error:"red",
+      },
       // Backward-compat nested structure used by older styled components
       text: {
         primary: "#111827",
