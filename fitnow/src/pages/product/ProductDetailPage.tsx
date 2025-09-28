@@ -1,7 +1,7 @@
 import { useState, lazy, Suspense } from "react";
-import { Search, ShoppingCart, User, Bell, Bookmark } from "lucide-react";
+import { Bookmark } from "lucide-react";
 import {
-  Page, TopBar, Container, Main, Viewer, Panel, PanelTop, Title, SubTitle, SmallText,
+  Page, Container, Main, Viewer, Panel, PanelTop, Title, SubTitle, SmallText,
   PriceRow, SizeGrid, SizePill, FitInfo, Links, CTA, BigButton, IconBtn,
   Accordion, Section, SectionHead, SectionBody, CartButton, BuyButton
 } from "./ProductDetailPage.styled";
@@ -52,13 +52,6 @@ export default function ProductDetailPage() {
 
   return (
     <Page>
-      <TopBar>
-        <div className="left" />
-        <div className="right">
-          <Search size={18} /><ShoppingCart size={18} /><User size={18} /><Bell size={18} />
-        </div>
-      </TopBar>
-
       <Container>
         <Main>
           <Viewer>
@@ -81,7 +74,7 @@ export default function ProductDetailPage() {
                 <Bookmark size={18} color={isInBrandWishlist ? "#0d5e4c" : "#e3e3e3"} />
               </button>
               
-            </PanelTop>
+            </PanelTop> 
 
             <Title>{PRODUCT.name}</Title>
             <SubTitle><b>{PRODUCT.color}</b></SubTitle>
