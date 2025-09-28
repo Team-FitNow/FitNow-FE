@@ -49,12 +49,26 @@ export const PRODUCT: Product & {
   ],
 };
 
-export const WITH_ITEM: Product = {
-  brand: "BEACH BRAINS",
-  name: "PLEATED WORK PANT",
-  price: 360000,
-  img: "https://media.worksout.co.kr/uploads/live/B025FWPAOT07282001/B025FWPAOT07282001-1.jpg",
-};
+export const WITH_ITEMS: Product[] = [
+  {
+    brand: "BEACH BRAINS",
+    name: "PLEATED WORK PANT",
+    price: 360000,
+    img: "https://media.worksout.co.kr/uploads/live/B025FWPAOT07282001/B025FWPAOT07282001-1.jpg",
+  },
+  {
+    brand: "BEACH BRAINS",
+    name: "BREAK BOMBER JACKET",
+    price: 690000,
+    img: "https://media.worksout.co.kr/resized/live/B025FWJAJL10548001/B025FWJAJL10548001-1.jpg",
+  },
+  {
+    brand: "BEACH BRAINS",
+    name: "FLOAT OVERSHIRT",
+    price: 289000,
+    img: "https://media.worksout.co.kr/resized/live/B025FWSWHO01178001/B025FWSWHO01178001-1.jpg",
+  },
+];
 
 export const BRAND_PRODUCTS: Product[] = [
   { brand: "BEACH BRAINS", name: "BREAK BOMBER JACKET", price: 690000, img: "https://media.worksout.co.kr/resized/live/B025FWJAJL10548001/B025FWJAJL10548001-1.jpg" },

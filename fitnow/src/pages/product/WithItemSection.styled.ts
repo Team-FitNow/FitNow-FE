@@ -5,6 +5,12 @@ export const SectionWrap = styled.section`
   h3{ font-size: 16px; font-weight: 800; margin-bottom: 16px; }
 `;
 
+export const List = styled.div`
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+`;
+
 export const Card = styled.div`
   width: 240px; display: grid; gap: 8px;
   img{ width: 100%; height: auto; display: block; border: 1px solid #eee; background:#fafafa; }
