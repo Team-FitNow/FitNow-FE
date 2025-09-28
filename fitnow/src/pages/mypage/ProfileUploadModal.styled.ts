@@ -15,12 +15,11 @@ export const ModalOverlay = styled.div`
 
 export const ModalContent = styled.div`
   background-color: ${({ theme }) => theme.colors.background};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
   overflow: hidden;
-  box-shadow: ${({ theme }) => theme.shadows.xl};
+  box-shadow: ${({ theme }) => theme.shadows.lg};
 `;
 
 export const ModalHeader = styled.div`
@@ -60,9 +59,8 @@ export const ModalBody = styled.div`
 `;
 
 export const UploadArea = styled.div<{ hasImage: boolean }>`
-  border: 2px dashed ${({ theme, hasImage }) => 
+  border: 1px dashed ${({ theme, hasImage }) => 
     hasImage ? theme.colors.border : theme.colors.primary};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
   padding: ${({ theme }) => theme.spacing["2xl"]};
   text-align: center;
   cursor: pointer;
@@ -92,7 +90,6 @@ export const UploadButton = styled.div`
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.lg};
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.background};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
 `;
@@ -105,7 +102,6 @@ export const ImageContainer = styled.div`
 export const ImagePreview = styled.img`
   max-width: 200px;
   max-height: 200px;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
   object-fit: cover;
 `;
 
@@ -150,7 +146,6 @@ export const ModalFooter = styled.div`
 
 export const ActionButton = styled.button<{ primary?: boolean }>`
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.lg};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
   border: 1px solid ${({ theme }) => theme.colors.border};
   background-color: ${({ theme, primary }) => 
     primary ? theme.colors.primary : theme.colors.background};

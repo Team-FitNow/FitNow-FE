@@ -16,8 +16,9 @@ export const SectionTitleStyled = styled.h2`
 export const StatsGridStyled = styled.div`
   display: flex;
   background-color: ${({ theme }) => theme.colors.surface};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
   margin-bottom: ${({ theme }) => theme.spacing.lg};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  box-shadow: ${({ theme }) => theme.shadows.sm};
   overflow: hidden;
 `;
 
@@ -26,7 +27,7 @@ export const StatCardStyled = styled.div`
   padding: ${({ theme }) => theme.spacing.lg};
   text-align: center;
   border-right: 1px solid ${({ theme }) => theme.colors.border};
-  
+  box-shadow: ${({ theme }) => theme.shadows.sm};
   &:last-child {
     border-right: none;
   }

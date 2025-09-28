@@ -7,7 +7,6 @@ import {
   ProductInfo,
   BrandName,
   ProductName,
-  DeliveryBadge,
   PriceContainer,
   Price,
   PriceLabel,
@@ -72,7 +71,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <ProductInfo>
         <BrandName>{brand}</BrandName>
         <ProductName>{name}</ProductName>
-        {isQuickDelivery && <DeliveryBadge>⚡ 빠른배송</DeliveryBadge>}
         
         <PriceContainer>
           <Price>{formatPrice(price)}원</Price>
