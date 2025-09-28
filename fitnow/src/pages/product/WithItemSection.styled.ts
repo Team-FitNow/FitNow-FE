@@ -7,7 +7,7 @@ export const SectionWrap = styled.section`
 
 export const Card = styled.div`
   width: 240px; display: grid; gap: 8px;
-  img{ width: 100%; height: auto; display: block; border-radius: 10px; border: 1px solid #eee; background:#fafafa; }
+  img{ width: 100%; height: auto; display: block; border: 1px solid #eee; background:#fafafa; }
   .meta{ display:grid; gap: 2px; }
   .brand{ font-size: 12px; color:#666; }
   .name{ font-weight: 800; font-size: 13px; }

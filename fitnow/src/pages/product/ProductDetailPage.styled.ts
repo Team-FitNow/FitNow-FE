@@ -15,9 +15,9 @@ export const Main = styled.div`
 `;
 
 export const Viewer = styled.div`
-  position:relative; border-radius: 16px; overflow:hidden; background:#fafafa; border:1px solid #eee;
+  position:relative; overflow:hidden; background:#fafafa; border:1px solid #eee;
   img{ width:100%; height:auto; display:block; cursor:pointer; }
-  .nav{ position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.85); border:1px solid #ddd; border-radius:999px; padding:6px; cursor:pointer; }
+  .nav{ position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.85); border:1px solid #ddd; padding:6px; cursor:pointer; }
   .prev{ left: 10px; }
   .next{ right: 10px; }
 `;
@@ -32,7 +32,7 @@ export const PanelTop = styled.div`
   width: 100%;
   .brand { font-weight: 700; letter-spacing: .3px; color: #222; flex-grow: 1; }
   .bookmark {
-    width: 34px; height: 34px; border: 1px solid #e3e3e3; border-radius: 8px;
+    width: 34px; height: 34px; border: 1px solid #e3e3e3;
     display: grid; place-items: center; background: #fff; cursor: pointer;
   }
 `;
@@ -60,7 +60,7 @@ export const SizeGrid = styled.div`
 `;
 
 export const SizePill = styled.span<{ $active?: boolean }>`
-  padding: 10px 16px; border-radius: 12px; border:1px solid #ddd; background:#fff; font-weight:700; font-size:13px; cursor:pointer;
+  padding: 10px 16px; border:1px solid #ddd; background:#fff; font-weight:700; font-size:13px; cursor:pointer;
   ${({ $active }) => $active && css`border-color:#0d5e4c; color:#0d5e4c; box-shadow:0 0 0 3px rgba(13,94,76,.08);`}
   &:disabled{ opacity:.35; cursor:not-allowed; text-decoration:line-through; }
 `;
@@ -79,7 +79,7 @@ export const CTA = styled.div`
 `;
 
 export const BigButton = styled.button<{ $disabled?: boolean }>`
-  height:48px; border-radius:10px; border:1px solid ${({ $disabled }) => ($disabled ? "#e3e3e3" : "#0d5e4c")};
+  height:48px; border:1px solid ${({ $disabled }) => ($disabled ? "#e3e3e3" : "#0d5e4c")};
   background: ${({ $disabled }) => ($disabled ? "#f6f7f8" : "#0d5e4c")};
   color: ${({ $disabled }) => ($disabled ? "#777" : "#fff")};
   font-weight:800; letter-spacing:.2px;
@@ -87,7 +87,7 @@ export const BigButton = styled.button<{ $disabled?: boolean }>`
 `;
 
 export const IconBtn = styled.button`
-  width: 42px; height: 48px; border: 1px solid #e3e3e3; border-radius: 10px; background:#fff; display:grid; place-items:center;
+  width: 42px; height: 48px; border: 1px solid #e3e3e3; background:#fff; display:grid; place-items:center;
 `;
 
 // 아코디언

@@ -12,7 +12,7 @@ export const Grid = styled.div`
 `;
 
 export const Card = styled.div`
-  border: 1px solid #eee; border-radius: 12px; overflow: hidden; background:#fff; display:grid; grid-template-rows: auto auto;
+  border: 1px solid #eee; overflow: hidden; background:#fff; display:grid; grid-template-rows: auto auto;
   .imgWrap{ background:#f6f6f6; }
   .imgWrap img{ width: 100%; height: auto; display:block; }
   .meta{ padding: 12px; }

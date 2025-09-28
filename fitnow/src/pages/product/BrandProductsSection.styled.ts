@@ -12,7 +12,7 @@ export const Grid = styled.div`
 `;
 
 export const Card = styled.div`
-  border: 1px solid #eee; border-radius: 12px; overflow: hidden; background:#fff;
+  border: 1px solid #eee; overflow: hidden; background:#fff;
   img{ width: 100%; height: auto; display: block; }
   .brand{ font-size: 12px; color:#666; padding: 10px 10px 0; }
   .name{ padding: 0 10px; font-weight: 800; }
