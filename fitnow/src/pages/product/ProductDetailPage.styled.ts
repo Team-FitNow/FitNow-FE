@@ -1,98 +1,330 @@
 import styled, { css } from "styled-components";
 
+/* ── Palette ─────────────────────────────────────────────────────────── */
+const INK = "#111827";
+const INK_SUB = "#374151";
+const MUTED = "#6B7280";
+const MUTED_LIGHT = "#9CA3AF";
+const LINE = "#D1D5DB";
+const SURFACE = "#F9FAFB";
+
+/* ── Page / Layout ───────────────────────────────────────────────────── */
 export const Page = styled.div`
-  color:#1a1a1a; background:#fff;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Noto Sans KR", Roboto, Helvetica, Arial, sans-serif;
+  color: ${INK};
+  background: #fff;
+  /* WORKSOUT 톤: Pretendard 계열 */
+  font-family: "Pretendard Variable", Pretendard, -apple-system, system-ui,
+               "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo",
+               "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 `;
 
 export const Container = styled.div`
-  max-width: 1280px; margin:0 auto; padding: 24px 16px 80px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
 `;
 
 export const Main = styled.div`
-  display:grid; grid-template-columns: 1.35fr .65fr; gap: 40px; align-items:start;
-  @media (max-width: 1024px){ grid-template-columns:1fr; }
-`;
-
-export const Viewer = styled.div`
-  position:relative; overflow:hidden; background:#fafafa; border:1px solid #eee;
-  img{ width:100%; height:auto; display:block; cursor:pointer; }
-  .nav{ position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.85); border:1px solid #ddd; padding:6px; cursor:pointer; }
-  .prev{ left: 10px; }
-  .next{ right: 10px; }
-`;
-
-export const Panel = styled.aside``;
-
-export const PanelTop = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  width: 100%;
-  .brand { font-weight: 700; letter-spacing: .3px; color: #222; flex-grow: 1; }
-  .bookmark {
-    width: 34px; height: 34px; border: 1px solid #e3e3e3;
-    display: grid; place-items: center; background: #fff; cursor: pointer;
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: 40px;
+  align-items: start;
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
   }
 `;
 
+export const Viewer = styled.div`
+  position: relative;
+  overflow: hidden;
+  background: #fafafa;
+  border: 1px solid #eee;
+
+  .slider { position: relative; overflow: hidden; width: 100%; }
+
+  .track {
+    display: flex;
+    width: 100%;
+    will-change: transform;
+    transition: transform 0.35s ease;
+    touch-action: pan-y;
+  }
+
+  .slide { flex: 0 0 100%; user-select: none; }
+  .slide img { width: 100%; height: auto; display: block; }
+
+  /* 좌/우 반쪽 히트영역 */
+  .hit {
+    position: absolute; top: 0; bottom: 0; width: 50%;
+    z-index: 3; background: transparent; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hit.left  { left: 0; }
+  .hit.right { right: 0; }
+
+  /* 도트 인디케이터 (이전 UI와 동일 비주얼) */
+.dots{
+  position:absolute;
+  left:50%;
+  bottom:10px;
+  transform:translateX(-50%);
+  display:flex;
+  gap:6px;
+  z-index:4;                 /* .hit(3)보다 위 */
+  padding:4px 6px;           /* 캡슐 패딩 */
+  background:rgba(255,255,255,.7);
+  border-radius:999px;
+  border:0;
+  margin:0;
+}
+
+.dot-wrap{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+/* 시각적으로 숨김(legend용) */
+.sr-only{
+  position:absolute !important;
+  width:1px; height:1px;
+  padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,1px,1px);
+  white-space:nowrap; border:0;
+}
+
+/* 라디오 입력은 보이지만 접근성 유지 */
+.dot-wrap input{
+  position:absolute;
+  opacity:0;
+  width:1px; height:1px;
+  pointer-events:none;
+}
+
+/* 점(6px) – 이전 UI와 동일 */
+.dot{
+  width:6px; height:6px;
+  border-radius:50%;
+  border:1px solid #cfd4da;
+  background:#fff;
+  display:block;
+}
+.dot.active{
+  background:#111827;
+  border-color:#111827;
+  transform:scale(1.05);
+}
+
+/* 키보드 포커스 */
+.dot-wrap input:focus-visible + .dot{
+  box-shadow:0 0 0 2px rgba(17,24,39,.25);
+}
+`;
+
+
+export const Track = styled.div<{ $idx: number; $skip?: boolean }>`
+  display: flex;
+  width: 100%;
+  will-change: transform;
+  touch-action: pan-y;
+
+  /* ⬇️ inline style 대신 prop으로 제어 */
+  transform: translateX(-${({ $idx }) => $idx * 100}%);
+  transition: ${({ $skip }) => ($skip ? "none" : "transform 0.35s ease")};
+`;
+
+
+export const Panel = styled.aside``;
+
+/* ── Brand row ───────────────────────────────────────────────────────── */
+export const PanelTop = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+
+  .brand {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: ${INK_SUB};
+  }
+  .brand-bookmark {
+    border: 0;
+    background: transparent;
+    padding: 4px;
+    line-height: 0;
+    color: ${MUTED_LIGHT};
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    svg {
+      stroke: currentColor;
+    }
+    &:hover {
+      color: ${INK_SUB};
+    }
+    &:active {
+      color: ${INK};
+    }
+  }
+`;
+
+/* ── Typography ──────────────────────────────────────────────────────── */
 export const Title = styled.h1`
-  font-size: 28px; font-weight: 800; margin: 0 0 4px; line-height:1.15;
+  font-size: 24px;      /* 스샷 기준 */
+  font-weight: 800;
+  line-height: 1.22;
+  margin: 0 0 4px;
+  color: ${INK};
 `;
 
 export const SubTitle = styled.div`
-  color:#222; margin-bottom: 6px; letter-spacing:.4px;
+  color: ${INK_SUB};
+  font-size: 12px;      /* 스샷 기준 */
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
 `;
 
 export const SmallText = styled.div`
-  color:#777; font-size: 13px; margin-bottom: 2px;
+  color: ${MUTED};
+  font-size: 12px;      /* 스샷 기준 */
+  line-height: 1.5;
+  margin-bottom: 2px;
 `;
 
+/* ── Price row ───────────────────────────────────────────────────────── */
 export const PriceRow = styled.div`
-  display:flex; align-items:center; gap:10px; margin: 12px 0 18px; font-weight:700;
-  .label{ color:#666; font-size: 13px; font-weight:600; }
-  .price{ font-size: 18px; }
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 16px;
+
+  .label {
+    color: ${MUTED};
+    font-size: 12px;    /* 스샷 기준 */
+    font-weight: 500;
+  }
+  .price {
+    font-size: 18px;
+    font-weight: 700;
+    color: ${INK};
+    font-variant-numeric: lining-nums;
+  }
 `;
 
+/* ── Size chips (44px 규격) ─────────────────────────────────────────── */
 export const SizeGrid = styled.div`
-  display:flex; gap: 10px; flex-wrap:wrap; margin-bottom: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
 `;
 
-export const SizePill = styled.span<{ $active?: boolean }>`
-  padding: 10px 16px; border:1px solid #ddd; background:#fff; font-weight:700; font-size:13px; cursor:pointer;
-  ${({ $active }) => $active && css`border-color:#0d5e4c; color:#0d5e4c; box-shadow:0 0 0 3px rgba(13,94,76,.08);`}
-  &:disabled{ opacity:.35; cursor:not-allowed; text-decoration:line-through; }
+export const SizePill = styled.button<{ $active?: boolean }>`
+  position: relative;
+  min-width: 52px;
+  height: 44px;           /* 스샷 규격 */
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid ${LINE};
+  border-radius: 2px;
+  background: #fff;
+  font-weight: 600;
+  font-size: 12px;        /* 스샷 규격 */
+  cursor: pointer;
+
+  ${({ $active }) =>
+    $active &&
+    css`
+      border-color: ${INK};
+      color: ${INK};
+      background: ${SURFACE};
+    `}
+
+  &[disabled] {
+    color: ${MUTED_LIGHT};
+    background: ${SURFACE};
+    cursor: not-allowed;
+  }
+  &[disabled]::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -10%;
+    width: 120%;
+    height: 1px;
+    background: ${LINE};
+    transform: rotate(-35deg);
+    pointer-events: none;
+  }
 `;
 
+/* ── Fit info ───────────────────────────────────────────────────────── */
 export const FitInfo = styled.div`
-  color:#666; font-size:12px; display:grid; grid-template-columns: 1fr; gap:4px; margin: 8px 0 10px;
+  color: ${MUTED};
+  font-size: 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3px;
+  margin: 6px 0 10px;
 `;
 
+/* ── Links ──────────────────────────────────────────────────────────── */
 export const Links = styled.div`
-  display:flex; gap:18px; margin-bottom: 14px;
-  a{ color:#0d5e4c; font-weight:700; font-size:13px; }
+  display: flex;
+  gap: 14px;
+  margin-bottom: 12px;
+  a {
+    color: ${INK};
+    font-weight: 500;
+    font-size: 13px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 `;
 
-export const CTA = styled.div`
-  display:grid; grid-template-columns: 1fr 42px; gap: 8px; align-items:center; margin-bottom: 18px;
+/* ── CTA (44px 버튼 + 44px 아이콘) ─────────────────────────────────── */
+export const CTA = styled.div<{ $hasSize?: boolean }>`
+  display: grid;
+  grid-template-columns: ${({ $hasSize }) => ($hasSize ? "1fr 1fr 44px" : "1fr 44px")};
+  gap: 8px;
+  align-items: center;
+  margin: 16px 0 14px;
 `;
 
 export const BigButton = styled.button<{ $disabled?: boolean }>`
-  height:48px; border:1px solid ${({ $disabled }) => ($disabled ? "#e3e3e3" : "#0d5e4c")};
-  background: ${({ $disabled }) => ($disabled ? "#f6f7f8" : "#0d5e4c")};
-  color: ${({ $disabled }) => ($disabled ? "#777" : "#fff")};
-  font-weight:800; letter-spacing:.2px;
+  height: 44px;                 /* 스샷 규격 */
+  border: 1px solid #000;       /* 요구: 검정 버튼 */
+  background: #000;
+  color: #fff;
+  font-weight: 700;             /* 버튼 가독성 ↑ */
+  letter-spacing: .2px;
+  font-size: 14px;
   width: 100%;
+  border-radius: 2px;
 `;
 
 export const IconBtn = styled.button`
-  width: 42px; height: 48px; border: 1px solid #e3e3e3; background:#fff; display:grid; place-items:center;
+  width: 44px;                  /* 스샷 규격 */
+  height: 44px;                 /* 스샷 규격 */
+  border: 1px solid ${LINE};
+  background: #fff;
+  display: grid;
+  place-items: center;
+  border-radius: 2px;
 `;
 
-// 아코디언
+/* ── Accordion ─────────────────────────────────────────────────────── */
 export const Accordion = styled.div`
-  margin-top: 14px; border-top: 1px solid #eee;
+  margin-top: 14px;
+  border-top: 1px solid #eee;   /* 섹션 위 라인 */
 `;
 
 export const Section = styled.div`
@@ -100,55 +332,48 @@ export const Section = styled.div`
 `;
 
 export const SectionHead = styled.div`
-  background-color: white;
-  color: #333;
-  padding: 15px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: none;
-  transition: background-color 0.3s ease;
-  &:hover {
-    background-color: #f1f1f1;
-  }
-  &:focus {
-    outline: none;
+  background:#fff;
+  color:${INK};
+  padding:14px 12px; 
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  &:hover{ background:#f7f7f7; }
+
+  & > span:last-child{
+    font-size:18px;
+    line-height:1;
+    min-width:24px;
+    text-align:right;
+    margin-left:12px;
   }
 `;
 
 export const SectionBody = styled.div`
-  padding: 15px;
-  font-size: 14px;
-  line-height: 1.6;
+  padding: 15px 0;
+  font-size: 13px; 
+  line-height: 1.7;
+  color: ${INK_SUB};
   border-top: 1px solid #e0e0e0;
 `;
 
-// 장바구니 버튼 스타일
+/* 선택 후 노출되는 구매/장바구니 버튼 스킨 */
 export const CartButton = styled(BigButton)`
-  background: #0d5e4c;
-  border: 1px solid #0d5e4c;
+  background: ${INK};
+  border: 1px solid ${INK};
   color: #fff;
-  cursor: pointer;
   &:hover {
-    background: #0a4d3b;
+    opacity: 0.92;
   }
 `;
-
-// 구매하기 버튼 스타일 (하얀색 배경)
 export const BuyButton = styled(BigButton)`
   background: #fff;
-  border: 1px solid #0d5e4c;
-  color: #0d5e4c;
-  cursor: pointer;
+  border: 1px solid ${INK};
+  color: ${INK};
   &:hover {
-    background: #f6f7f8;
+    background: ${SURFACE};
   }
-`;
-
-export const ButtonContainer = styled.div`
-  display: flex;
-  width: 100%;
 `;
