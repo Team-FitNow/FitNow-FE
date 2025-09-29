@@ -43,24 +43,39 @@ export const PRODUCT: Product & {
   fit: { hw: "185cm / 65kg", wearing: "M" },
   sizes: ["XS", "S", "M", "L"],
   images: [
-    "https://picsum.photos/seed/modelA/1200/1400",
-    "https://picsum.photos/seed/modelB/1200/1400",
+    "https://media.worksout.co.kr/uploads/live/B025FWSWHO00003001/B025FWSWHO00003001-1.jpg",
+    "https://media.worksout.co.kr/uploads/live/B025FWSWHO00003001/B025FWSWHO00003001-3.jpg",
+    "https://media.worksout.co.kr/uploads/live/B025FWSWHO00003001/B025FWSWHO00003001-20.jpg"
   ],
 };
 
-export const WITH_ITEM: Product = {
-  brand: "BEACH BRAINS",
-  name: "PLEATED WORK PANT",
-  price: 360000,
-  img: "https://picsum.photos/seed/pants/520/680",
-};
+export const WITH_ITEMS: Product[] = [
+  {
+    brand: "BEACH BRAINS",
+    name: "PLEATED WORK PANT",
+    price: 360000,
+    img: "https://media.worksout.co.kr/uploads/live/B025FWPAOT07282001/B025FWPAOT07282001-1.jpg",
+  },
+  {
+    brand: "BEACH BRAINS",
+    name: "BREAK BOMBER JACKET",
+    price: 690000,
+    img: "https://media.worksout.co.kr/resized/live/B025FWJAJL10548001/B025FWJAJL10548001-1.jpg",
+  },
+  {
+    brand: "BEACH BRAINS",
+    name: "FLOAT OVERSHIRT",
+    price: 289000,
+    img: "https://media.worksout.co.kr/resized/live/B025FWSWHO01178001/B025FWSWHO01178001-1.jpg",
+  },
+];
 
 export const BRAND_PRODUCTS: Product[] = [
-  { brand: "BEACH BRAINS", name: "BREAK BOMBER JACKET", price: 690000, img: "https://picsum.photos/seed/brand1/480/600" },
-  { brand: "BEACH BRAINS", name: "TOUR ZIP HOOD", price: 278000, img: "https://picsum.photos/seed/brand2/480/600" },
-  { brand: "BEACH BRAINS", name: "FLOAT OVERSHIRT", price: 289000, img: "https://picsum.photos/seed/brand3/480/600" },
-  { brand: "BEACH BRAINS", name: "DEAD END SHIRT", price: 219000, img: "https://picsum.photos/seed/brand4/480/600" },
-  { brand: "BEACH BRAINS", name: "DREAM TEE", price: 119000, img: "https://picsum.photos/seed/brand5/480/600" },
+  { brand: "BEACH BRAINS", name: "BREAK BOMBER JACKET", price: 690000, img: "https://media.worksout.co.kr/resized/live/B025FWJAJL10548001/B025FWJAJL10548001-1.jpg" },
+  { brand: "BEACH BRAINS", name: "TOUR ZIP HOOD", price: 278000, img: "https://media.worksout.co.kr/resized/live/B025FWSWHO00003001/B025FWSWHO00003001-1.jpg" },
+  { brand: "BEACH BRAINS", name: "FLOAT OVERSHIRT", price: 289000, img: "https://media.worksout.co.kr/resized/live/B025FWSWHO01178001/B025FWSWHO01178001-1.jpg" },
+  { brand: "BEACH BRAINS", name: "DEAD END SHIRT", price: 219000, img: "https://media.worksout.co.kr/resized/live/B025FWSHLS02383001/B025FWSHLS02383001-1.jpg" },
+  { brand: "BEACH BRAINS", name: "DREAM TEE", price: 119000, img: "https://media.worksout.co.kr/resized/live/B025FWTSLS16381001/B025FWTSLS16381001-0.jpg" },
 ];
 
 export const RECENT_PRODUCTS: RecentItem[] = [
