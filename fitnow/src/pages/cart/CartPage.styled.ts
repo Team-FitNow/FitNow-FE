@@ -70,7 +70,7 @@ export const TabsIndicatorStyled = styled.div<{ $index: 0 | 1 }>`
 export const EmptyBandStyled = styled.section`
   margin-top: ${({ theme }) => theme.spacing.lg};
   background: ${({ theme }) => theme.colors.hover};
-  border-radius: ${({ theme }) => theme.radii.xl};
+  border-radius: 0;
   padding: 64px 0;
   text-align: center;
 
@@ -84,7 +84,7 @@ export const EmptyBandStyled = styled.section`
     display: inline-block;
     padding: 10px 16px;
     border: 1px solid ${({ theme }) => theme.colors.textPrimary};
-    border-radius: ${({ theme }) => theme.radii.xl};
+    border-radius: 0;
     background: ${({ theme }) => theme.colors.surface};
     color: ${({ theme }) => theme.colors.textPrimary};
     transition: background 160ms ease, color 160ms ease, box-shadow 160ms ease;
@@ -117,7 +117,7 @@ export const ItemCardStyled = styled.div`
   gap: ${({ theme }) => theme.spacing.sm};
   padding: ${({ theme }) => theme.spacing.sm};
   border: 1px solid ${({ theme }) => theme.colors.border}; /* 옅은 경계 */
-  border-radius: ${({ theme }) => theme.radii.xl};
+  border-radius: 0;
   background: ${({ theme }) => theme.colors.surface};
   box-shadow: ${({ theme }) => theme.shadows.lg};
 `;
@@ -126,7 +126,7 @@ export const ThumbStyled = styled.img`
   width: 96px;
   height: 96px;
   object-fit: cover;
-  border-radius: ${({ theme }) => theme.radii.lg};
+  border-radius: 0;
   border: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
@@ -156,7 +156,7 @@ export const ItemMetaStyled = styled.div`
     margin-top: 4px;
     padding: 2px 6px;
     border: 1px solid ${({ theme }) => theme.colors.border};
-    border-radius: ${({ theme }) => theme.radii.md};
+    border-radius: 0;
     font-size: ${({ theme }) => theme.fontSizes.xs || "0.8rem"};
     color: ${({ theme }) => theme.colors.textSecondary};
   }
@@ -176,7 +176,7 @@ export const QtyControlStyled = styled.div`
   button {
     width: 28px;
     height: 28px;
-    border-radius: ${({ theme }) => theme.radii.md};
+    border-radius: 0;
     border: 1px solid ${({ theme }) => theme.colors.border};
     background: ${({ theme }) => theme.colors.hover};
     color: ${({ theme }) => theme.colors.textPrimary};
@@ -214,7 +214,7 @@ export const CouponBoxStyled = styled.div`
   gap: 10px;
   padding: ${({ theme }) => theme.spacing.sm};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.xl};
+  border-radius: 0;
   background: ${({ theme }) => theme.colors.surface};
 
   .row {
@@ -225,7 +225,7 @@ export const CouponBoxStyled = styled.div`
     flex: 1;
     height: 40px;
     padding: 0 ${({ theme }) => theme.spacing.sm};
-    border-radius: ${({ theme }) => theme.radii.md};
+    border-radius: 0;
     border: 1px solid ${({ theme }) => theme.colors.border};
     background: ${({ theme }) => theme.colors.inputBg};
     color: ${({ theme }) => theme.colors.textPrimary};
@@ -233,7 +233,7 @@ export const CouponBoxStyled = styled.div`
   button {
     height: 40px;
     padding: 0 ${({ theme }) => theme.spacing.sm};
-    border-radius: ${({ theme }) => theme.radii.md};
+    border-radius: 0;
     border: 1px solid ${({ theme }) => theme.colors.textPrimary};
     background: ${({ theme }) => theme.colors.surface};
     color: ${({ theme }) => theme.colors.textPrimary};
@@ -252,7 +252,7 @@ export const ShippingBoxStyled = styled.div`
   gap: ${({ theme }) => theme.spacing.xs};
   padding: ${({ theme }) => theme.spacing.sm};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.xl};
+  border-radius: 0;
   background: ${({ theme }) => theme.colors.surface};
 `;
 
@@ -262,7 +262,7 @@ export const RadioStyled = styled.label<{ $active?: boolean }>`
   gap: ${({ theme }) => theme.spacing.sm};
   padding: ${({ theme }) => theme.spacing.sm};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.lg};
+  border-radius: 0;
   background: ${({ $active, theme }) =>
     $active ? theme.colors.hover : theme.colors.surface};
   cursor: pointer;
@@ -281,7 +281,7 @@ export const SummaryCardStyled = styled.div`
   gap: ${({ theme }) => theme.spacing.xs};
   padding: ${({ theme }) => theme.spacing.sm};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.xl};
+  border-radius: 0;
   background: ${({ theme }) => theme.colors.surface};
 
   .line {
@@ -312,7 +312,7 @@ export const AgreeBoxStyled = styled.div`
   align-items: center;
   padding: ${({ theme }) => theme.spacing.sm};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.xl};
+  border-radius: 0;
   background: ${({ theme }) => theme.colors.surface};
 
   input[type="checkbox"] {
@@ -366,7 +366,7 @@ export const StickyBarStyled = styled.div`
     color: ${({ theme }) => theme.colors.textPrimary};
   }
   button {
-    border-radius: ${({ theme }) => theme.radii.xl};
+    border-radius: 0;
     padding: 10px 16px;
     border: 1px solid ${({ theme }) => theme.colors.textPrimary};
     background: ${({ theme }) => theme.colors.surface};
@@ -386,7 +386,7 @@ export const StickyBarStyled = styled.div`
 /* ---------- 버튼/인풋/체크박스 ---------- */
 export const ButtonStyled = styled.button`
   padding: 10px 14px;
-  border-radius: ${({ theme }) => theme.radii.lg};
+  border-radius: 0;
   border: 1px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.hover};
   color: ${({ theme }) => theme.colors.textPrimary};
@@ -400,7 +400,7 @@ export const ButtonStyled = styled.button`
 export const InputStyled = styled.input`
   height: 40px;
   padding: 0 ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.radii.md};
+  border-radius: 0;
   border: 1px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.inputBg};
   color: ${({ theme }) => theme.colors.textPrimary};
@@ -449,16 +449,15 @@ export const RecoGridStyled = styled.div`
   @media (min-width: 1024px) {
     grid-template-columns: repeat(4, 1fr);
   }
-  @media (min-width: 1280px) {
-    grid-template-columns: repeat(5, 1fr);
-  }
 `;
+
+
 
 export const RecoThumbWrapStyled = styled.div`
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  border-radius: ${({ theme }) => theme.radii.lg};
+  border-radius: 0;
   border: 1px solid ${({ theme }) => theme.colors.border};
 
   img {
@@ -477,7 +476,7 @@ export const RecoCardStyled = styled.div`
   position: relative;
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.xl};
+  border-radius: 0;
   padding: ${({ theme }) => theme.spacing.sm};
   display: grid;
   gap: ${({ theme }) => theme.spacing.xs};
@@ -527,17 +526,35 @@ export const RecoPriceRowStyled = styled.div`
     font-weight: 700;
   }
   .wish {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     border: 1px solid ${({ theme }) => theme.colors.textPrimary};
-    border-radius: ${({ theme }) => theme.radii.xl};
+    border-radius: 0;
     padding: 6px 12px;
     background: ${({ theme }) => theme.colors.surface};
     color: ${({ theme }) => theme.colors.textPrimary};
-    cursor: pointer;
-    transition: background 120ms ease;
+    transition: transform 160ms ease, box-shadow 160ms ease, color 160ms ease, background 160ms ease;
+  }
+  .wish.active {
+    background: ${({ theme }) => theme.colors.textPrimary};
+    color: ${({ theme }) => theme.colors.onPrimary};
+    border-color: ${({ theme }) => theme.colors.textPrimary};
+  }
 
-    &:hover {
-      background: ${({ theme }) => theme.colors.hover};
-    }
+  .wish svg {
+    transition: transform 160ms ease, color 160ms ease, fill 160ms ease;
+  }
+
+  .wish:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+  }
+  .wish:hover svg {
+    transform: scale(1.08);
+    color: ${({ theme }) => theme.colors.primary};
+    fill: ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -551,7 +568,7 @@ export const DividerStyled = styled.hr`
 /* ---------- 추가: BadgeStyled & EmptyStyled ---------- */
 export const BadgeStyled = styled.span`
   padding: 2px 8px;
-  border-radius: ${({ theme }) => theme.radii.pill};
+  border-radius: 0;
   border: 1px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.badgeBg};
   font-size: ${({ theme }) => theme.fontSizes.sm};
@@ -566,7 +583,7 @@ export const EmptyStyled = styled.div`
   padding: 48px ${({ theme }) => theme.spacing.md};
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.xl};
+  border-radius: 0;
   text-align: center;
 
   .title {
@@ -597,7 +614,7 @@ export const ModalContentStyled = styled.div`
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.textPrimary};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.xl};
+  border-radius: 0;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   overflow: hidden;
 `;
@@ -648,7 +665,7 @@ export const ModalFooterStyled = styled.div`
 
 export const ModalCloseButtonStyled = styled.button`
   padding: 10px 14px;
-  border-radius: ${({ theme }) => theme.radii.lg};
+  border-radius: 0;
   border: 1px solid ${({ theme }) => theme.colors.textPrimary};
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.textPrimary};
@@ -662,4 +679,3 @@ export const ModalCloseButtonStyled = styled.button`
     box-shadow: 0 0 0 3px ${({ theme }) => theme.focusRing};
   }
 `;
-

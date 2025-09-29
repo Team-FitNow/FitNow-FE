@@ -1,7 +1,8 @@
-// 1) React / 라이브러리
-import React, { useEffect, useMemo, useReducer, useState } from "react";
 
-// 3) 상대경로 import (부모 → 자식)
+// 1) React / 라이브러리
+import React, { useEffect, useMemo, useReducer, useState, useCallback } from "react";
+
+// 2) 상대경로 import (부모 → 자식)
 import {
   ContainerStyled,
   HeaderStyled,
@@ -37,6 +38,7 @@ import {
   RecoPriceRowStyled,
   DividerStyled,
   TabsIndicatorStyled,
+  // 모달 스타일(정책/주문서 모두 공용으로 사용)
   ModalOverlayStyled,
   ModalContentStyled,
   ModalHeaderStyled,
@@ -45,10 +47,33 @@ import {
   ModalCloseButtonStyled,
 } from "./CartPage.styled.ts";
 
+/* ==============================
+   아이콘 컴포넌트 (TSX 내부 정의)
+   ============================== */
+export const BookmarkFilledIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" width="16" height="16" {...props}>
+    <path
+      d="M6 2h12a2 2 0 0 1 2 2v18l-8-4-8 4V4a2 2 0 0 1 2-2z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+export const BookmarkOutlineIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" width="16" height="16" {...props}>
+    <path
+      d="M6 2h12a2 2 0 0 1 2 2v18l-8-4-8 4V4a2 2 0 0 1 2-2z"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+    />
+  </svg>
+);
+
 // ==============================
 // Types
 // ==============================
-type ShippingMode = "일반" | "특급";
+type ShippingMode = "일반"; // 특급 제거
 
 type CartItem = {
   id: string;
@@ -62,6 +87,7 @@ type CartItem = {
   seller?: string;
   condition?: "새상품" | "중고" | "미개봉";
   limited?: boolean;
+  // compositeUrl?: string; // 추후 합성 이미지 URL 연결 시 사용할 수 있음
 };
 
 type State = {
@@ -128,7 +154,7 @@ const RECO_SEED: CartItem[] = [
     brand: "NEW BALANCE",
     name: "2002R",
     price: 189000,
-    img: "https://images.unsplash.com/photo-1620799139509-41b4ad0c000d?q=80&w=800&auto=format&fit=crop",
+    img: "https://images.unsplash.com/photo-1620799139003-10f0f2e1c930?q=80&w=1200&auto=format&fit=crop",
     qty: 1,
   },
   {
@@ -152,6 +178,7 @@ const RECO_SEED: CartItem[] = [
 const numberFormat = (n: number): string =>
   new Intl.NumberFormat("ko-KR").format(n);
 
+// 쿠폰
 const applyCoupon = (
   subtotal: number,
   code: string,
@@ -166,14 +193,28 @@ const applyCoupon = (
   return { discount: 0, label: "유효하지 않은 쿠폰" };
 };
 
-const getShippingFee = (mode: ShippingMode, itemCount: number): number => {
+// 배송비 (특급 제거)
+const getShippingFee = (_mode: ShippingMode, itemCount: number): number => {
   if (itemCount === 0) return 0;
-  return mode === "일반" ? 3000 : 7000;
+  return 3000; // 일반 고정
 };
 
+// 서비스 수수료
 const getServiceFee = (subtotal: number): number => {
   if (subtotal === 0) return 0;
   return Math.max(0, Math.floor(subtotal * 0.01));
+};
+
+// 개별 상품 예상 도착일 (일반: T+2일)
+const getDeliveryDateLabel = (base: Date, plusDays: number): string => {
+  const d = new Date(base);
+  d.setDate(d.getDate() + plusDays);
+  const fmt = new Intl.DateTimeFormat("ko-KR", {
+    month: "2-digit",
+    day: "2-digit",
+    weekday: "short",
+  });
+  return `${fmt.format(d)} 도착예정`;
 };
 
 // ==============================
@@ -219,16 +260,20 @@ const reducer = (state: State, action: Action): State => {
     case "AGREE":
       return { ...state, agreement: action.value };
     case "ADD": {
-      const exists = state.items.find((i) => i.id === action.item.id);
-      return exists
-        ? {
-            ...state,
-            items: state.items.map((i) =>
-              i.id === action.item.id ? { ...i, qty: Math.min(i.qty + 1, 9) } : i,
-            ),
-          }
-        : { ...state, items: [...state.items, { ...action.item, qty: 1 }] };
-    }
+    const exists = state.items.find((i) => i.id === action.item.id && i.option === action.item.option);
+    const addQty = Math.max(1, action.item.qty || 1);
+  return exists
+    ? {
+        ...state,
+        items: state.items.map((i) =>
+          i.id === action.item.id && i.option === action.item.option
+            ? { ...i, qty: Math.min(i.qty + addQty, 9) }
+            : i
+        ),
+      }
+    : { ...state, items: [...state.items, { ...action.item, qty: addQty }] };
+}
+
     default:
       return state;
   }
@@ -248,15 +293,16 @@ export const CartPage: React.FC = () => {
   const [toast, setToast] = useState<string>("");
   const [wishes, setWishes] = useState<Record<string, boolean>>({});
   const [activeTab, setActiveTab] = useState<"fitnow" | "brand">("fitnow");
-  const [policyOpen, setPolicyOpen] = useState<boolean>(false);
 
+  // 모달 상태
+  const [policyOpen, setPolicyOpen] = useState(false);
+  const [orderOpen, setOrderOpen] = useState(false);
 
-  // 토스트 자동 닫힘 (약 2.5초)
-  useEffect(() => {
-    if (!toast) return;
-    const timer = setTimeout(() => setToast(""), 2500);
-    return () => clearTimeout(timer);
-  }, [toast]);
+  // 옵션/수량 선택 모달
+  const [optionOpen, setOptionOpen] = useState(false);
+  const [optionTarget, setOptionTarget] = useState<CartItem | null>(null);
+  const [optionValue, setOptionValue] = useState<string>("270"); // 기본 선택값
+  const [optionQty, setOptionQty] = useState<number>(1);
 
   // init (localStorage → fallback SEED)
   useEffect(() => {
@@ -273,30 +319,36 @@ export const CartPage: React.FC = () => {
     }
   }, []);
 
- useEffect(() => {
-  if (!policyOpen) return;
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "Escape") setPolicyOpen(false);
-  };
-  window.addEventListener("keydown", onKeyDown);
-  return () => window.removeEventListener("keydown", onKeyDown);
-}, [policyOpen]);
-
-useEffect(() => {
-  if (policyOpen) {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }
-}, [policyOpen]);
-
   // persist
   useEffect(() => {
     const data: State = { ...state };
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [state]);
+
+  // 토스트 2.5초 후 자동닫힘
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(""), 2500);
+    return () => clearTimeout(t);
+  }, [toast]);
+
+  // Escape로 모달 닫기
+  const handleEscClose = useCallback(
+  (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      if (orderOpen) setOrderOpen(false);
+      if (policyOpen) setPolicyOpen(false);
+      if (optionOpen) setOptionOpen(false);
+    }
+  },
+  [orderOpen, policyOpen, optionOpen]
+);
+
+useEffect(() => {
+  if (!orderOpen && !policyOpen && !optionOpen) return;
+  window.addEventListener("keydown", handleEscClose);
+  return () => window.removeEventListener("keydown", handleEscClose);
+}, [orderOpen, policyOpen, optionOpen, handleEscClose]);
 
   const totals = useMemo(() => {
     const subtotalItems = state.items.reduce(
@@ -314,10 +366,11 @@ useEffect(() => {
   const itemCount = state.items.reduce((n, it) => n + it.qty, 0);
   const brandCount = 0; // 브랜드 배송 (연동 전 0 고정)
 
-  const addToCart = (it: CartItem) => {
-    dispatch({ type: "ADD", item: it });
-    setToast("장바구니에 담았습니다.");
-  };
+ const addToCart = (it: CartItem) => {
+  const withFee: CartItem = { ...it, fee: it.fee ?? 2000 };
+  dispatch({ type: "ADD", item: withFee });
+  setToast("장바구니에 담았습니다.");
+};
 
   const toggleWish = (id: string) => {
     setWishes((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -478,35 +531,15 @@ useEffect(() => {
           ) : null}
         </CouponBoxStyled>
 
+        {/* 배송 방법 (특급 제거 → 일반만 표시) */}
         <ShippingBoxStyled>
           <strong>배송 방법</strong>
-          <RadioStyled $active={state.shipping === "일반"}>
-            <input
-              type="radio"
-              name="shipping"
-              checked={state.shipping === "일반"}
-              onChange={() => dispatch({ type: "SHIP", shipping: "일반" })}
-            />
+          <RadioStyled $active>
+            <input type="radio" name="shipping" checked readOnly />
             <div>
               <div>일반</div>
               <div className="desc">
-                예상 2~3일 · {numberFormat(getShippingFee("일반", state.items.length))}
-                원
-              </div>
-            </div>
-          </RadioStyled>
-          <RadioStyled $active={state.shipping === "특급"}>
-            <input
-              type="radio"
-              name="shipping"
-              checked={state.shipping === "특급"}
-              onChange={() => dispatch({ type: "SHIP", shipping: "특급" })}
-            />
-            <div>
-              <div>특급</div>
-              <div className="desc">
-                내일도착(일부 제외) ·{" "}
-                {numberFormat(getShippingFee("특급", state.items.length))}원
+                예상 2~3일 · {numberFormat(getShippingFee("일반", state.items.length))}원
               </div>
             </div>
           </RadioStyled>
@@ -539,23 +572,25 @@ useEffect(() => {
         </SummaryCardStyled>
 
         <AgreeBoxStyled>
-            <CheckboxStyled
-              checked={state.agreement}
-              onChange={(e) => dispatch({ type: "AGREE", value: e.currentTarget.checked })}
-            />
-            <span className="text">
-              구매조건 및 환불/교환 정책을 확인했어요.{" "}
-              <button
-                type="button"
-                aria-label="policy"
-                onClick={() => setPolicyOpen(true)}
-                className="link"
-              >
-                자세히
-              </button>
-            </span>
+          <CheckboxStyled
+            checked={state.agreement}
+            onChange={(e) =>
+              dispatch({ type: "AGREE", value: e.currentTarget.checked })
+            }
+          />
+          <span className="text">
+            구매조건 및 환불/교환 정책을 확인했어요.{" "}
+            <button
+              type="button"
+              className="link"
+              onClick={() => setPolicyOpen(true)}
+              aria-haspopup="dialog"
+              aria-controls="policy-modal"
+            >
+              자세히
+            </button>
+          </span>
         </AgreeBoxStyled>
-
       </SectionStyled>
 
       <DividerStyled />
@@ -564,16 +599,14 @@ useEffect(() => {
       <RecoSectionStyled aria-label="추천 상품">
         <RecoHeaderStyled>
           <h2>이런 상품은 어떠세요?</h2>
-          <button onClick={() => setToast("추천 알고리즘 안내")}>
-            더 보기
-          </button>
+        <button onClick={() => setToast("추천 알고리즘 안내 (데모)")}>더 보기</button>
         </RecoHeaderStyled>
 
         <RecoGridStyled>
           {RECO_SEED.map((p) => (
             <RecoCardStyled key={p.id}>
               <RecoThumbWrapStyled>
-                <RecoThumbStyled src={p.img} alt={p.name} />
+                <RecoThumbStyled src={p.img} alt={p.name} loading="lazy" />
               </RecoThumbWrapStyled>
               <RecoMetaStyled>
                 <div className="brand">{p.brand}</div>
@@ -582,12 +615,31 @@ useEffect(() => {
               <RecoPriceRowStyled>
                 <div className="price">{numberFormat(p.price)}원</div>
                 <div style={{ display: "flex", gap: 6 }}>
-                  <button className="wish" onClick={() => setToast("로그인 필요")}>
-                    {wishes[p.id] ? "★" : "☆"}
+                  {/* 찜 버튼: 아이콘 + active 클래스 + 접근성 속성 */}
+                  <button
+                    className={`wish ${wishes[p.id] ? "active" : ""}`}
+                    onClick={() => toggleWish(p.id)}
+                    aria-pressed={!!wishes[p.id]}
+                    aria-label={wishes[p.id] ? "찜 해제" : "찜 하기"}
+                    type="button"
+                  >
+                    {wishes[p.id] ? <BookmarkFilledIcon /> : <BookmarkOutlineIcon />}
                   </button>
-                  <button className="wish" onClick={() => addToCart(p)}>
-                    담기
-                  </button>
+
+                  {/* 담기 버튼 */}
+                  <button
+  className="wish"
+  type="button"
+  onClick={() => {
+    setOptionTarget(p);
+    setOptionValue("270");  // 초기화
+    setOptionQty(1);        // 초기화
+    setOptionOpen(true);
+  }}
+>
+  담기
+</button>
+
                 </div>
               </RecoPriceRowStyled>
             </RecoCardStyled>
@@ -605,82 +657,419 @@ useEffect(() => {
           <button
             disabled={!state.agreement || state.items.length === 0}
             className="primary"
-            onClick={() => setToast("결제 플로우로 이동")}
+            onClick={() => setToast("(데모) 결제 플로우로 이동")}
           >
             결제하기
           </button>
-          <button onClick={() => setToast("주문서 요약 열기")}>
-            상세보기
-          </button>
+          {/* 상세보기: 주문서 요약 모달 오픈 */}
+          <button onClick={() => setOrderOpen(true)}>상세보기</button>
           {state.items.length > 0 ? (
             <button onClick={() => dispatch({ type: "CLEAR" })}>전체 비우기</button>
           ) : null}
         </div>
       </StickyBarStyled>
 
-      {/* 환불/교환 정책 모달 */}
-        {policyOpen && (
-          <ModalOverlayStyled
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="policy-title"
-            onClick={(e) => {
-              if (e.target === e.currentTarget) setPolicyOpen(false);
-            }}
+      {/* =============== 모달: 환불/교환 정책 =============== */}
+      {policyOpen && (
+        <ModalOverlayStyled
+          role="dialog"
+          aria-modal="true"
+          id="policy-modal"
+          onClick={() => setPolicyOpen(false)}
+        >
+          <ModalContentStyled
+            tabIndex={-1}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.key === "Escape" && setPolicyOpen(false)}
           >
-            <ModalContentStyled tabIndex={-1} autoFocus onKeyDown={(e) => { if (e.key === "Escape") setPolicyOpen(false); }}>
-              <ModalHeaderStyled>
-                <h3 id="policy-title">환불/교환 정책</h3>
-                <ModalCloseButtonStyled onClick={() => setPolicyOpen(false)} aria-label="닫기">
-                  닫기
-                </ModalCloseButtonStyled>
-              </ModalHeaderStyled>
+            <ModalHeaderStyled>
+              <h3>환불/교환 정책</h3>
+              <ModalCloseButtonStyled onClick={() => setPolicyOpen(false)}>
+                닫기
+              </ModalCloseButtonStyled>
+            </ModalHeaderStyled>
+            <ModalBodyStyled>
+              <h4>기본 정책</h4>
+              <ul>
+                <li>상품 수령 후 7일 이내 교환/환불 신청이 가능합니다.</li>
+                <li>포장을 개봉했거나 사용 흔적이 있는 경우에는 불가할 수 있습니다.</li>
+                <li>단순 변심의 경우 왕복 배송비가 발생합니다.</li>
+              </ul>
+              <h4>예외 사항</h4>
+              <ul>
+                <li>한정 상품 및 미개봉 보장 상품은 정책이 다를 수 있습니다.</li>
+                <li>자세한 내용은 고객센터를 통해 문의해 주세요.</li>
+              </ul>
+            </ModalBodyStyled>
+            <ModalFooterStyled>
+              {/* “확인” 시 체크박스도 같이 체크 */}
+              <ModalCloseButtonStyled
+                onClick={() => {
+                  setPolicyOpen(false);
+                  if (!state.agreement) {
+                    dispatch({ type: "AGREE", value: true });
+                    setToast("정책에 동의하셨습니다.");
+                  }
+                }}
+              >
+                확인
+              </ModalCloseButtonStyled>
+            </ModalFooterStyled>
+          </ModalContentStyled>
+        </ModalOverlayStyled>
+      )}
 
-              <ModalBodyStyled>
-                <h4>1. 단순 변심에 의한 교환/환불</h4>
-                <p>
-                  상품 수령일 포함 <strong>7일 이내</strong> 가능하며, 상품 및 포장이 훼손되지 않은
-                  경우에 한합니다. 왕복 배송비가 부과될 수 있습니다.
-                </p>
+      {/* =============== 모달: 옵션/수량 선택 =============== */}
+{optionOpen && optionTarget && (
+  <ModalOverlayStyled
+    role="dialog"
+    aria-modal="true"
+    id="option-modal"
+    onClick={() => setOptionOpen(false)}
+  >
+    <ModalContentStyled
+      tabIndex={-1}
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.key === "Escape" && setOptionOpen(false)}
+      aria-labelledby="option-modal-title"
+    >
+      <ModalHeaderStyled>
+        <h3 id="option-modal-title">옵션/수량 선택</h3>
+        <ModalCloseButtonStyled onClick={() => setOptionOpen(false)}>
+          닫기
+        </ModalCloseButtonStyled>
+      </ModalHeaderStyled>
 
-                <h4>2. 상품 하자/오배송</h4>
-                <p>
-                  동일 상품 교환 또는 전액 환불 가능합니다. 사진 증빙과 함께 고객센터로 접수해 주세요.
-                </p>
+      <ModalBodyStyled>
+        {/* 상품 미리보기 */}
+        <div style={{ display: "grid", gridTemplateColumns: "96px 1fr", gap: 12, alignItems: "center", marginBottom: 12 }}>
+          <img
+            src={optionTarget.img}
+            alt={optionTarget.name}
+            style={{ width: 96, height: 96, objectFit: "cover", background: "#f6f7f8" }}
+            loading="lazy"
+          />
+          <div style={{ minWidth: 0 }}>
+            <div style={{ fontSize: 12, color: "rgba(0,0,0,0.5)", letterSpacing: 0.2, textTransform: "uppercase" }}>
+              {optionTarget.brand}
+            </div>
+            <div
+              style={{ marginTop: 4, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+              title={optionTarget.name}
+            >
+              {optionTarget.name}
+            </div>
+          </div>
+        </div>
 
-                <h4>3. 불가 사유</h4>
-                <ul>
-                  <li>착용/세탁/훼손/택 제거 등으로 재판매가 어려운 경우</li>
-                  <li>구매 확정 혹은 사용 흔적이 명백한 경우</li>
-                  <li>사전 고지된 한정/특가/맞춤 상품</li>
-                </ul>
+        {/* 옵션 선택 (사이즈 예시) */}
+        <div style={{ display: "grid", gap: 10 }}>
+          <label style={{ fontSize: 13 }}>
+            사이즈
+            <select
+              value={optionValue}
+              onChange={(e) => setOptionValue(e.target.value)}
+              style={{
+                display: "block",
+                marginTop: 6,
+                width: "100%",
+                height: 40,
+                border: "1px solid rgba(0,0,0,0.15)",
+                background: "#fff",
+                padding: "0 10px",
+              }}
+            >
+              {["240", "250", "260", "270", "280", "290"].map((s) => (
+                <option value={s} key={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </label>
 
-                <h4>4. 처리 절차</h4>
-                <p>
-                  마이페이지 &gt; 주문내역 &gt; 교환/환불 신청에서 접수하세요. 검수 완료 후 결제수단별 환불 규정에 따라 환급됩니다.
-                </p>
+          {/* 수량 선택 */}
+          <div>
+            <div style={{ fontSize: 13, marginBottom: 6 }}>수량</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <button
+                onClick={() => setOptionQty((q) => Math.max(1, q - 1))}
+                style={{ width: 32, height: 32, border: "1px solid rgba(0,0,0,0.15)", background: "transparent" }}
+                aria-label="수량 감소"
+              >
+                −
+              </button>
+              <div style={{ width: 32, textAlign: "center", fontWeight: 500, color: "rgba(0,0,0,0.55)" }}>
+                {optionQty}
+              </div>
+              <button
+                onClick={() => setOptionQty((q) => Math.min(9, q + 1))}
+                style={{ width: 32, height: 32, border: "1px solid rgba(0,0,0,0.15)", background: "transparent" }}
+                aria-label="수량 증가"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+      </ModalBodyStyled>
 
-                <p style={{ marginTop: 8 }}>
-                  보다 자세한 내용은 이용약관 및 소비자분쟁해결기준을 따릅니다.
-                </p>
-              </ModalBodyStyled>
+      <ModalFooterStyled>
+        <div style={{ marginRight: "auto", fontSize: 14, opacity: 0.85 }}>
+          선택 수량 {optionQty}개 · 합계{" "}
+          {numberFormat((optionTarget.price + (optionTarget.fee ?? 2000)) * optionQty)}원
+          <span style={{ fontSize: 12, color: "rgba(0,0,0,0.55)", marginLeft: 6 }}>
+            (수수료 포함)
+          </span>
+        </div>
 
-          <ModalFooterStyled>
-            <ModalCloseButtonStyled
-               onClick={() => {
-                setPolicyOpen(false);
-                  dispatch({ type: "AGREE", value: true }); //체크박스 자동 체크
-                     }}
-                     >
-                  확인
-            </ModalCloseButtonStyled>
-          </ModalFooterStyled>
+        {/* 담기 */}
+        <button
+          type="button"
+          onClick={() => {
+            const withFee: CartItem = { ...optionTarget, fee: optionTarget.fee ?? 2000 };
+            dispatch({
+              type: "ADD",
+              item: { ...withFee, option: optionValue, qty: optionQty },
+            });
+            setOptionOpen(false);
+            setToast("장바구니에 담았습니다.");
+          }}
+          style={{
+            padding: "10px 14px",
+            border: "1px solid rgba(0,0,0,0.85)",
+            background: "#111",
+            color: "#fff",
+            borderRadius: 8,
+            cursor: "pointer",
+            transition: "background 160ms ease, color 160ms ease, box-shadow 160ms ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#000";
+            e.currentTarget.style.boxShadow = "0 4px 18px rgba(0,0,0,0.12)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "#111";
+            e.currentTarget.style.boxShadow = "none";
+          }}
+        >
+          담기
+        </button>
+      </ModalFooterStyled>
+    </ModalContentStyled>
+  </ModalOverlayStyled>
+)}
 
-            </ModalContentStyled>
-          </ModalOverlayStyled>
-        )}
 
-      {/* 간단 토스트 (데모) */}
+      {/* =============== 모달: 주문서 요약 =============== */}
+      {orderOpen && (
+        <ModalOverlayStyled
+          role="dialog"
+          aria-modal="true"
+          id="order-modal"
+          onClick={() => setOrderOpen(false)}
+        >
+          <ModalContentStyled
+            tabIndex={-1}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.key === "Escape" && setOrderOpen(false)}
+          >
+            <ModalHeaderStyled>
+              <h3>주문서 요약</h3>
+              <ModalCloseButtonStyled onClick={() => setOrderOpen(false)}>
+                닫기
+              </ModalCloseButtonStyled>
+            </ModalHeaderStyled>
+
+            <ModalBodyStyled>
+              {state.items.length === 0 ? (
+                <p>장바구니에 담긴 상품이 없습니다.</p>
+              ) : (
+                <div style={{ display: "grid", gap: 20 }}>
+                  {state.items.map((it) => (
+                    <div
+                      key={it.id}
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "112px 1fr auto",
+                        gap: 16,
+                        alignItems: "center",
+                        border: "none",
+                        padding: 0,
+                      }}
+                    >
+                      {/* ✅ 썸네일 + 합성 미리보기 영역 (복원) */}
+                      <div style={{ display: "grid", gap: 8 }}>
+                        <img
+                          src={it.img}
+                          alt={it.name}
+                          style={{
+                            width: 112,
+                            height: 112,
+                            objectFit: "cover",
+                            border: "none",
+                            background: "#f6f7f8",
+                          }}
+                          loading="lazy"
+                        />
+                        {/* 추후 실제 합성 이미지가 생기면 아래 div를 <img src={it.compositeUrl} .../> 로 교체 */}
+                        <div
+                          style={{
+                            width: 112,
+                            height: 72,
+                            border: "1px dashed rgba(0,0,0,0.2)",
+                            display: "grid",
+                            placeItems: "center",
+                            fontSize: 11,
+                            color: "rgba(0,0,0,0.55)",
+                            background: "transparent",
+                          }}
+                          aria-label="합성 미리보기(준비중)"
+                        >
+                          합성 미리보기
+                        </div>
+                      </div>
+
+                      {/* 메타 (브랜드만, 옵션/상태/셀러 제거) */}
+                      <div style={{ minWidth: 0 }}>
+                        <div
+                          style={{
+                            fontSize: 12,
+                            color: "rgba(0,0,0,0.5)",
+                            letterSpacing: 0.2,
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {it.brand}
+                        </div>
+
+                        <div
+                          style={{
+                            marginTop: 6,
+                            fontWeight: 600,
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                          title={it.name}
+                        >
+                          {it.name}
+                        </div>
+
+                        {/* 배송 예정일만 남김 */}
+                        <div style={{ marginTop: 8, fontSize: 12, color: "rgba(0,0,0,0.55)" }}>
+                          {getDeliveryDateLabel(new Date(), 2)}
+                        </div>
+
+                        {/* 수량 컨트롤 (가운데 숫자 얇고 연하게) */}
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10 }}>
+                          <button
+                            onClick={() => dispatch({ type: "DEC", id: it.id })}
+                            style={{
+                              width: 32,
+                              height: 32,
+                              border: "1px solid rgba(0,0,0,0.15)",
+                              background: "transparent",
+                              lineHeight: "30px",
+                            }}
+                            aria-label="수량 감소"
+                          >
+                            −
+                          </button>
+                          <div
+                            style={{
+                              width: 32,
+                              textAlign: "center",
+                              fontWeight: 500,          // 더 얇게
+                              color: "rgba(0,0,0,0.55)" // 연한 색
+                            }}
+                          >
+                            {it.qty}
+                          </div>
+                          <button
+                            onClick={() => dispatch({ type: "INC", id: it.id })}
+                            style={{
+                              width: 32,
+                              height: 32,
+                              border: "1px solid rgba(0,0,0,0.15)",
+                              background: "transparent",
+                              lineHeight: "30px",
+                            }}
+                            aria-label="수량 증가"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* 가격 + 삭제 (테두리 없는 버튼) */}
+                      <div style={{ textAlign: "right" }}>
+                        <div style={{ fontWeight: 700 }}>{numberFormat(it.price * it.qty)}원</div>
+                        {it.fee ? (
+                          <div style={{ fontSize: 12, color: "rgba(0,0,0,0.5)", marginTop: 4 }}>
+                            수수료 {numberFormat((it.fee || 0) * it.qty)}원
+                          </div>
+                        ) : null}
+                        <button
+                          onClick={() => dispatch({ type: "REMOVE", id: it.id })}
+                          style={{
+                            marginTop: 10,
+                            border: "none",
+                            background: "transparent",
+                            color: "rgba(0,0,0,0.65)",
+                            textDecoration: "underline",
+                            padding: 0,
+                            cursor: "pointer",
+                          }}
+                          aria-label="상품 삭제"
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </ModalBodyStyled>
+
+           <ModalFooterStyled>
+  <div style={{ marginRight: "auto", fontSize: 14, opacity: 0.85 }}>
+    총 {itemCount}개 · {numberFormat(totals.total)}원
+  </div>
+
+  {/* 하단 버튼을 결제하기 + 호버 효과 */}
+  <button
+    type="button"
+    onClick={() => {
+      setOrderOpen(false);
+      setToast("(데모) 결제 플로우로 이동");
+    }}
+    style={{
+      padding: "10px 14px",
+      border: "1px solid rgba(0,0,0,0.85)",
+      background: "#111",
+      color: "#fff",
+      borderRadius: 8,
+      cursor: "pointer",
+      transition: "background 160ms ease, color 160ms ease, box-shadow 160ms ease"
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.background = "#000";
+      e.currentTarget.style.boxShadow = "0 4px 18px rgba(0,0,0,0.12)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.background = "#111";
+      e.currentTarget.style.boxShadow = "none";
+    }}
+  >
+    결제하기
+  </button>
+</ModalFooterStyled>
+
+          </ModalContentStyled>
+        </ModalOverlayStyled>
+      )}
+
+      {/* 간단 토스트 (자동 닫힘) */}
       {toast ? (
         <div
           role="status"
@@ -693,7 +1082,6 @@ useEffect(() => {
             background: "rgba(0,0,0,0.85)",
             color: "#fff",
             padding: "8px 12px",
-            borderRadius: 12,
             fontSize: 12,
           }}
         >
