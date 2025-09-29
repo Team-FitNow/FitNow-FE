@@ -7,6 +7,7 @@ export const ContainerStyled = styled.div`
   padding: 0 ${({ theme }) => theme.spacing.md} 140px;
   background: ${({ theme }) => theme.colors.surface}; /* 배경 연한 회색 제거 → 흰색 */
   color: ${({ theme }) => theme.colors.textPrimary};
+  font-family: ui-sans-serif, system-ui, -apple-system, "Noto Sans KR", Roboto, Helvetica, Arial, sans-serif;
 `;
 
 /* ---------- 상단 타이틀 & 탭 ---------- */
@@ -18,7 +19,7 @@ export const HeaderStyled = styled.header`
 export const TitleStyled = styled.h1`
   margin: 0 0 ${({ theme }) => theme.spacing.md};
   font-size: 1.5rem;   /* 더 작게 */
-  font-weight: 600;    /* 덜 두껍게 */
+  font-weight: 20;    /* 덜 두껍게 */
   letter-spacing: -0.02em;
 `;
 
@@ -43,7 +44,7 @@ export const TabItemStyled = styled.button<{ $active?: boolean }>`
   gap: ${({ theme }) => theme.spacing.xs};
 
   .count {
-    font-weight: 700;
+    font-weight: 300;
     font-size: ${({ theme }) => theme.fontSizes.md};
     color: ${({ theme }) => theme.colors.textPrimary};
   }
@@ -141,7 +142,7 @@ export const ItemMetaStyled = styled.div`
   }
   .name {
     margin-top: 2px;
-    font-weight: 600;
+    font-weight: 300;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -184,7 +185,7 @@ export const QtyControlStyled = styled.div`
   .qty {
     width: 28px;
     text-align: center;
-    font-weight: 600;
+    font-weight: 200;
     color: ${({ theme }) => theme.colors.textPrimary};
   }
 `;
@@ -192,7 +193,7 @@ export const QtyControlStyled = styled.div`
 export const PriceBoxStyled = styled.div`
   text-align: right;
   .price {
-    font-weight: 700;
+    font-weight: 400;
     color: ${({ theme }) => theme.colors.textPrimary};
   }
   .fee {
@@ -361,7 +362,7 @@ export const StickyBarStyled = styled.div`
     color: ${({ theme }) => theme.colors.textSecondary};
   }
   .info .value {
-    font-weight: 700;
+    font-weight: 500;
     font-size: ${({ theme }) => theme.fontSizes.lg || "1.1rem"};
     color: ${({ theme }) => theme.colors.textPrimary};
   }
@@ -427,7 +428,7 @@ export const RecoHeaderStyled = styled.div`
   h2 {
     margin: 0;
     font-size: ${({ theme }) => theme.fontSizes.lg || "1.1rem"};
-    font-weight: 700;
+    font-weight: 500;
   }
   button {
     border: none;
@@ -444,9 +445,10 @@ export const RecoGridStyled = styled.div`
   grid-template-columns: repeat(2, 1fr);
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
-  @media (min-width: 1024px) {
+  @media (min-width: -100px) {
+    /* 데스크톱에서 정확히 4개 카드가 양끝에 딱 맞게 */
     grid-template-columns: repeat(4, 1fr);
   }
 `;
@@ -455,31 +457,44 @@ export const RecoGridStyled = styled.div`
 
 export const RecoThumbWrapStyled = styled.div`
   width: 100%;
-  aspect-ratio: 1 / 1;
+  /* 고정된 썸네일 높이로 카드 크기 축소 */
+  height: 200px;
   overflow: hidden;
   border-radius: 0;
+  background: #ffffff;
   border: 1px solid ${({ theme }) => theme.colors.border};
+  position: relative;
 
   img {
     transition: transform 250ms ease;
     will-change: transform;
+  }
+  @media (min-width: 768px) {
+    height: 220px;
+  }
+  @media (min-width: 1024px) {
+    height: 240px;
   }
 `;
 
 export const RecoThumbStyled = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #ffffff;
+  padding: 6px;
 `;
 
 export const RecoCardStyled = styled.div`
   position: relative;
-  background: ${({ theme }) => theme.colors.surface};
+  background: #ffffff; /* 카드 뒷배경 흰색 고정 */
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 0;
-  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: 12px;
+  overflow: hidden;
+  /* 이미지가 카드 너비와 동일하게 */
+  padding: 0;
   display: grid;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: 0;
   transition:
     transform 160ms ease,
     box-shadow 160ms ease,
@@ -491,7 +506,7 @@ export const RecoCardStyled = styled.div`
     &:hover {
       transform: translateY(-2px);
       border-color: ${({ theme }) => theme.colors.textPrimary};
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
     &:hover ${/* sc-selector */ RecoThumbWrapStyled} img {
       transform: scale(1.03);
@@ -505,15 +520,21 @@ export const RecoCardStyled = styled.div`
 `;
 
 export const RecoMetaStyled = styled.div`
+  /* 가로 패딩 제거 → 텍스트 블록 폭을 이미지와 동일하게 */
+  padding: ${({ theme }) => theme.spacing.xs} 0;
   .brand {
     font-size: ${({ theme }) => theme.fontSizes.sm};
     color: ${({ theme }) => theme.colors.textSecondary};
   }
   .name {
-    font-weight: 600;
-    white-space: nowrap;
+    font-weight: 500;
+    line-height: 1.3;
+    /* 두 줄까지만 표시하고 말줄임 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
+    min-height: calc(1.3em * 2);
   }
 `;
 
@@ -521,40 +542,12 @@ export const RecoPriceRowStyled = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* 가로 패딩 제거 → 가격 라인도 이미지 폭과 동일 */
+  padding: 0 0 ${({ theme }) => theme.spacing.xs};
 
   .price {
-    font-weight: 700;
-  }
-  .wish {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    border: 1px solid ${({ theme }) => theme.colors.textPrimary};
-    border-radius: 0;
-    padding: 6px 12px;
-    background: ${({ theme }) => theme.colors.surface};
-    color: ${({ theme }) => theme.colors.textPrimary};
-    transition: transform 160ms ease, box-shadow 160ms ease, color 160ms ease, background 160ms ease;
-  }
-  .wish.active {
-    background: ${({ theme }) => theme.colors.textPrimary};
-    color: ${({ theme }) => theme.colors.onPrimary};
-    border-color: ${({ theme }) => theme.colors.textPrimary};
-  }
-
-  .wish svg {
-    transition: transform 160ms ease, color 160ms ease, fill 160ms ease;
-  }
-
-  .wish:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
-  }
-  .wish:hover svg {
-    transform: scale(1.08);
-    color: ${({ theme }) => theme.colors.primary};
-    fill: ${({ theme }) => theme.colors.primary};
+    font-weight: 500;
+    font-size: ${({ theme }) => theme.fontSizes.md};
   }
 `;
 
@@ -587,7 +580,7 @@ export const EmptyStyled = styled.div`
   text-align: center;
 
   .title {
-    font-weight: 700;
+    font-weight: 500;
     color: ${({ theme }) => theme.colors.textPrimary};
   }
   .desc {
@@ -629,7 +622,7 @@ export const ModalHeaderStyled = styled.div`
   h3 {
     margin: 0;
     font-size: ${({ theme }) => theme.fontSizes.lg || "1.1rem"};
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: -0.01em;
   }
 `;
@@ -641,7 +634,7 @@ export const ModalBodyStyled = styled.div`
   h4 {
     margin: 0 0 ${({ theme }) => theme.spacing.xs};
     font-size: ${({ theme }) => theme.fontSizes.md};
-    font-weight: 600;
+    font-weight: 500;
   }
   p, li {
     font-size: ${({ theme }) => theme.fontSizes.md};

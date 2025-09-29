@@ -20,7 +20,6 @@ import {
   RadioStyled,
   SummaryCardStyled,
   AgreeBoxStyled,
-  StickyBarStyled,
   EmptyStyled,
   ButtonStyled,
   InputStyled,
@@ -47,28 +46,6 @@ import {
   ModalCloseButtonStyled,
 } from "./CartPage.styled.ts";
 
-/* ==============================
-   아이콘 컴포넌트 (TSX 내부 정의)
-   ============================== */
-export const BookmarkFilledIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" width="16" height="16" {...props}>
-    <path
-      d="M6 2h12a2 2 0 0 1 2 2v18l-8-4-8 4V4a2 2 0 0 1 2-2z"
-      fill="currentColor"
-    />
-  </svg>
-);
-
-export const BookmarkOutlineIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" width="16" height="16" {...props}>
-    <path
-      d="M6 2h12a2 2 0 0 1 2 2v18l-8-4-8 4V4a2 2 0 0 1 2-2z"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-    />
-  </svg>
-);
 
 // ==============================
 // Types
@@ -88,6 +65,11 @@ type CartItem = {
   condition?: "새상품" | "중고" | "미개봉";
   limited?: boolean;
   // compositeUrl?: string; // 추후 합성 이미지 URL 연결 시 사용할 수 있음
+  // 추천 상품용 필드
+  likes?: number;
+  reviews?: number;
+  transactions?: number;
+  isQuickDelivery?: boolean;
 };
 
 type State = {
@@ -104,29 +86,25 @@ const STORAGE_KEY = "CART_V1";
 
 const SEED: CartItem[] = [
   {
-    id: "nk-dunk-01",
-    brand: "NIKE",
-    name: "Dunk Low Retro Panda",
-    option: "270",
-    price: 169000,
+    id: "C.P.Company-01",
+    brand: "C.P. Company",
+    name: "C.P. Company Chrome-R Goggle Down Jacket Black - 24FW",
+    option: "XL",
+    price: 733000,
     fee: 2000,
-    img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800&auto=format&fit=crop",
+    img: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEBUTExIWFRUVGBYVGBUVFRUXFRgXFRcWFxUVFRcYHSggGBolGxUYITEhJSkrLi4uGB8zODMtNygtLisBCgoKBQUFDgUFDisZExkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOAA4AMBIgACEQEDEQH/xAAcAAEAAgIDAQAAAAAAAAAAAAAAAgcBAwQGCAX/xABEEAACAQICBgcDCAcIAwAAAAAAAQIDEQQhBxIxQVFhBQYTInGBkaHB0QgUIzJyorHwJTNSgrLh8SRDYmNkc5LCFUJE/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ALxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAqfSb16mpywmFnqqOVWpF5uW+nGS+qlvazvdZWdw7z0x1zwOGbjUrx11k4QTnJNbnq3s/Gx1bFaYcJFvVw9aSW96kfP6zKWbl4mmU3fN+jAuuhpjw7ffw1WK4xlTk/Rtfidt6A65YLGNRo11rv+7n3Knkn9b9255j7bbZ3tkQVeSd02n8OAHr4FP6MNJcpyhhMZK7k1ClXe3WeUadR777FLjk9ty4AAAAAAAAAAAAAAAAAAAAAAAAAAAA6hpQ6wyweBfZu1Ws+zg1tin9ea8Flfc5Jnn/tf5+RYunXGt4qjS3Qo668ak5J+ylEqv5z3Mnbe3wvnn8AM4rHrc14cXuOF86nwXnk/azj1Kjlsyvvv3mt137kbMOk2r2smsrZebWYG6lVsvqNy32tvdzZGbe1rwzuvXec3ofoylXlJTrU6EIq95xb35LarL1fI+djEozahUVRJ92ajJX8ppNfnaBvpz1Xf8PztPSei/rHLHYCMqktarSfY1HvlKKjKM3zcZRb53PMrqO13/V8EW98nvFtVMVRb+tGnVS4OLlGT9JQXkgLqAAAAAAAAAAAAAAAAAAAAAAAAAAFFacqDj0hTm2rToxS4pxnO9/Ve0qnF2atxlkve/C5emnnotypYfEJZQlKnK3+O0oN8FeLXmikpra1HbdeF94HDlSayt4czdSp6uba9dme9rK/Inqzd89XhdLZ4murhVk5Scs0v58kBGtBp8jNGlrcln68jkuiv/V2XqvRkHFx4ZvdF3svP83A0zgnK72RV+WRaegGlOXSFapsjDDuNudSpTcW/KnIq+absrWvt8OHiXroB6LcMLXxDVu2qRhF8Y0U7tfv1JrxiwLUAAAAAAAAAAAAAAAAAAAAAADgdN9L0cJRlWrz1YR9ZN7IxW+T4e5Ac86x1j6+YHBpqVXtKiy7Klacr8JO+rHzaZUnW3SXi8W3Cm3QovLUg+/Jf5k9r8FZZ2zOkSxDfIDvHXLSXicbRqUI06dKjNWcXHXm0mn9eWSeV01FNPfkV5Tq32nI1zRVjmBMRSulbb8SEX58zm9D2lXhfJJt38E37gOBGz9vLfwJqOXAhh13Y33pP1JzmkBqnk7JXe6/48kWP1N0n4nB0qdCpSpVaFOKilBOnUSW/Wu4ze15pNvayu6C2t7XsXBfE263AD0z1b694HG2jTq6lR/3VValTwW6b+y2dmPIN09ufj8DvPVHSfisHaFVvEUP2Zy+liv8uo9v2ZZcHED0KDgdCdL0cXQjXoy1oS8mnvjJbpLgc8AAAAAAAAAAAAAAAADEpJJtuyWbb2JLezzjpE62Sx+JbTfYQvGlHZlvm1+1K1+SstxZ2l/rK8PhlhqUrVcQmpPfGjsl5yb1Vy1ntSKGqR4P1AVKrexP0NLvwfozZB7hOb4gaszDizLkGwNcoflE6VbUz35rnmmkRZFx5gZSbSMdlZ32vi2vZwJwiiaQEVFmHdbifsMp22eu8DW78GL7ieua758f5/0A7to564vo/ELXb+b1Go1Y7o7lVXOO/ir77W9GpnkCEeJ6A0O9ZHicI6FSTlVw9ldu7lSlfUbb2tWcfBR4gWAAAAAAAAAAAAAAAHxeuXS/zTA169+9GDUP9yfcp/ekvK4FB6Rum3ieka807xhJ0YfYpd3Lk5KUv3jq7kRlFmmba2oDb2iv5Ii532GcJO9/I5GsBxLvg/RmL57H6HIdQg5AanfgYTfA23Mfn8QIKXJ+NjOu+D9GbIsk6gHHU97v4WeRl1OTXO34G/tWzOswOM6q5+jJ0pe73k5SNHaJXuBv1jtWjfrGsH0hSnN2pzfY1HuUKjS1m+CkoyfKLOlwnKWxee43wo5ZvlYD2ID4XUfpR4ro7DVm7ylTUZPjOneE3/yiz7oAAAAAAAAAAACtdOuP1MFRpJ51Kus1xjThK/3pQLKKU+UBW+nwsb5KnVdvtSgn/CvQCqpSMNmmUyPzhAcqna3i/wAFb8+Ach2S339bEWord7wNbqLiQ7VPYSSTz1Vy/AanJegGFIi55mdXkvQj2eexeIGxTMtkVDkjOryAymHUMW5GF4IDMpGqME5u+ayfnZG1QjtsYUFFNrz37ANlyUZHE7cnGpyYHoPQZjnPo+dN2+hrSSX+GajPP95zLGKY+T1WevjIvLu0JW8HWTt6r2FzgAAAAAAAAAAAKJ08S/SNJf6aHtq1vgi9igtO079JwXDDU/bUrMCupMjTgm80nbP3mNazMxnk7K+7dlyA2qRxq8t3EmpP9l+q+Jre3YBOm7uy2LI2SZCkkl7fUw5AS1hI1uf55kZTyA3Izc1xZK4BEZbTJGYGYEovc9jyNSnmZs+QCmrK3AmmQbzz35+73BsC1tAVT+2148aF/wDjUgv+xeZ5/wBA0v0pNX/+arlfb9LQ/PkegAAAAAAAAAAAAHn/AE6U/wBKRfHD0v46qPQBRGnqi10hRnulh4peMalS/wDGgKxnT8fUzTVllvfwEjCksvMCcnkceMb79v4f0JVZXyXh8WZp7eS4gSdJb2yPYrn6mwxfICDox4e1kJwtsNrZF2sBiEVv/Ey4L8thEgI6i5+phw5skANb2ErkWvaY11YBWV3HwfuJKCNfaXa8/cbUBY+gemv/ACs3ww1V+tSgj0CUToAw18dXqX+pQ1Lce0qRbfl2XtL2AAAAAAAAAAAAUl8oNf2jCZbadW/gpQt+JdpT/wAoOjlg58HXjfx7J2+6wKYlrcjMY5ZpfiZZFbPMDKy3WRhT5N+RJoRkBr15fse1BxnyXmbWxcDT2cuK9ocHvfobbkJvIDKg9zMNS5e0zF5EgNfe4L1/kYcnw9psuYbA16/JoykJMkBCs8425+4wtbkJvvLz9xNAWt8nuMvneJe5UYLbxnlf0ftLzKf+T1h+5jKllnKjC+/uqpJr76LgAAAAAAAAAAAAVd8oCk/mNCe6NfVfLWpVM/WK9S0TommrCufRFRq77OdKo0uGuou/JKd/IDzj2qItKW95cGbGYWxgFT5v1+BhbSV8iKhxYCVVLK5Dtk2vU2KEVuMgau24J+jIOeSXx/KN4jLPwtkBCFTISrE4skwNaqIy2ZyZF01wAjBB0+bJ6oQGm2rJZ8dpsUkYmu94IyooC+9AFGKwFeafeliHFrhq0qTS+835loHR9DXRnYdEUm1Z1pTru29Tdqb86cYHeAAAAAAAAAAAAHC6b6OjicNWoS2Vqc6b5a8XG/le5zQB46xFGUJypzWrOEpQnHhKDcZLyaZqnKyPSHW7RbgsfX7dupQqNt1JUWl2mSSclJNKSttSV7u98rcXC6Gei4q0lXq851pK/lTUUB5xeIbaST5c3uy3ltdD6FcTVo06lXFQoyqRjN03RlKUNZJ6ku+s1ez5lm9DaOei8LXhXo4bVqwu4ylVrTs2mm9Wc3G9m87HawKjwegyil9LjasuPZ06dP8Ai1zn0NCPRyd5VsVPk6lNL7tNP2lmgCvaWhvopbYVpfarz/62PoS0W9EWSWDStmmqla91+03PveEro7kAOnrRf0RqavzOO/vdpVU3fb31K/lsW44ctEPRDX6iovDEV/fM74AK1xGhXo6X1amJp/ZqQa+/BnycZoLg/wBTj6kf92jCp7YyhYuAAUJ0toVxdKlOdLE0qzhGUlT7OcJzsr6se9Jaz3X3lVxxCPZ50vpfRb0Xia061ShJTqNylqVakE5PbLVTsm3m+d2B5k1rtvwOVgsNKrUhSh9epKNOP2pyUY5eLRf1fQr0W13e3g+Mat39+MkcrqjoqweAxPzhTqVpR/Vdrq/RtqUZS7iSm2pb1luA7tgsLGlShSgrRpxjCK4RglFL0RvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/9k=",
     qty: 1,
-    seller: "스니커즈셀러 A",
-    condition: "새상품",
     limited: true,
   },
   {
-    id: "ad-yeezy-02",
-    brand: "ADIDAS",
-    name: "Yeezy Boost 350 V2",
-    option: "260",
-    price: 299000,
+    id: "C.P.Company-02",
+    brand: "C.P. Company",
+    name: "C.P. Company D.D. Shell Hooded Medium Down Jacket Grape Leaf Green - 24FW",
+    option: "XL",
+    price: 1190000,
     fee: 2000,
-    img: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=800&auto=format&fit=crop",
+    img: "https://image-cdn.hypb.st/https%3A%2F%2Fs3.store.hypebeast.com%2Fmedia%2Fimage%2F25%2F7c%2Fpuffer-jacket-1-1-c6868.jpg?fit=max&w=460&q=60",
     qty: 1,
-    seller: "한정판샵 B",
-    condition: "미개봉",
     limited: false,
   },
 ];
@@ -134,44 +112,52 @@ const SEED: CartItem[] = [
 // 추천 상품 (데모)
 const RECO_SEED: CartItem[] = [
   {
-    id: "nk-aj1-03",
-    brand: "NIKE",
-    name: "Air Jordan 1 Retro High",
+    id: "Stone-Island-03",
+    brand: "Stone Island",
+    name: "Stone Island 10210 Supima Cotton Twill Stretch-TC Overshirt Musk Green - 24SS",
     price: 359000,
-    img: "https://images.unsplash.com/photo-1605348532760-6753d2c43329?q=80&w=800&auto=format&fit=crop",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_ueZso1OwM-WXZb7IZJpURRIKnUfIqWu07w&s",
     qty: 1,
+    likes: 172,
+    reviews: 8,
+    transactions: 38,
+    isQuickDelivery: true,
   },
   {
-    id: "ad-forum-04",
-    brand: "ADIDAS",
-    name: "Forum 84 Low",
-    price: 159000,
-    img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800&auto=format&fit=crop",
+    id: "Stone-Island-04",
+    brand: "Stone Island",
+    name: "Stone Island 40723 Crinkle Reps Hooded Down Jacket Black - 24FW",
+    price: 1300000,
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTkvyMlIfrPRcYkIOB1sLbqycsiZH40-bLug&s",
     qty: 1,
+    likes: 1955,
+    reviews: 281,
+    transactions: 951,
+    isQuickDelivery: true,
   },
   {
-    id: "nb-2002r-05",
-    brand: "NEW BALANCE",
-    name: "2002R",
-    price: 189000,
-    img: "https://images.unsplash.com/photo-1620799139003-10f0f2e1c930?q=80&w=1200&auto=format&fit=crop",
+    id: "Stone-Island-05",
+    brand: "Stone Island",
+    name: "Stone Island Q0519 Nylon Metal Econyl Regenerated Nylon Primaloft Jacket Light Grey - 22FW",
+    price: 510000,
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiCqlSs9sCFeIrQO3FHpnwQ8Pcs5cQLyqVxw&s",
     qty: 1,
+    likes: 385,
+    reviews: 27,
+    transactions: 139,
+    isQuickDelivery: true,
   },
   {
-    id: "cnv-ct70-06",
-    brand: "CONVERSE",
-    name: "Chuck 70",
-    price: 99000,
-    img: "https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=800&auto=format&fit=crop",
+    id: "Stone-Island-06",
+    brand: "Stone Island",
+    name: "Stone Island 101WN Brushed Cotton Canvas T.CO+OLD Overshirt Light Grey - 22FW",
+    price: 629000,
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5nVeamE8Wsh988REvZDSCfa14_bmmWg4X7w&s ",
     qty: 1,
-  },
-  {
-    id: "nk-dunk-07",
-    brand: "NIKE",
-    name: "Dunk Low",
-    price: 179000,
-    img: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=800&auto=format&fit=crop",
-    qty: 1,
+    likes: 343,
+    reviews: 2,
+    transactions: 59,
+    isQuickDelivery: true,
   },
 ];
 
@@ -291,7 +277,6 @@ export const CartPage: React.FC = () => {
   });
 
   const [toast, setToast] = useState<string>("");
-  const [wishes, setWishes] = useState<Record<string, boolean>>({});
   const [activeTab, setActiveTab] = useState<"fitnow" | "brand">("fitnow");
 
   // 모달 상태
@@ -366,15 +351,7 @@ useEffect(() => {
   const itemCount = state.items.reduce((n, it) => n + it.qty, 0);
   const brandCount = 0; // 브랜드 배송 (연동 전 0 고정)
 
- const addToCart = (it: CartItem) => {
-  const withFee: CartItem = { ...it, fee: it.fee ?? 2000 };
-  dispatch({ type: "ADD", item: withFee });
-  setToast("장바구니에 담았습니다.");
-};
 
-  const toggleWish = (id: string) => {
-    setWishes((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
 
   return (
     <ContainerStyled>
@@ -388,7 +365,7 @@ useEffect(() => {
             onClick={() => setActiveTab("fitnow")}
           >
             <div className="count">{itemCount}</div>
-            <div className="label">F!t Now 배송</div>
+            <div className="label">F!tNow 배송</div>
           </TabItemStyled>
 
           <TabItemStyled
@@ -445,13 +422,12 @@ useEffect(() => {
                   <div style={{ minWidth: 0 }}>
                     <ItemMetaStyled>
                       <div className="brand">
-                        {it.brand} · {it.seller}
+                        {it.brand}
                       </div>
                       <div className="name">{it.name}</div>
                       <div className="sub">
-                        옵션: {it.option || "단일"} · {it.condition}
+                        옵션: {it.option || "단일"}
                       </div>
-                      {it.limited ? <span className="limited">한정</span> : null}
                     </ItemMetaStyled>
                   </div>
                   <ButtonStyled
@@ -614,60 +590,13 @@ useEffect(() => {
               </RecoMetaStyled>
               <RecoPriceRowStyled>
                 <div className="price">{numberFormat(p.price)}원</div>
-                <div style={{ display: "flex", gap: 6 }}>
-                  {/* 찜 버튼: 아이콘 + active 클래스 + 접근성 속성 */}
-                  <button
-                    className={`wish ${wishes[p.id] ? "active" : ""}`}
-                    onClick={() => toggleWish(p.id)}
-                    aria-pressed={!!wishes[p.id]}
-                    aria-label={wishes[p.id] ? "찜 해제" : "찜 하기"}
-                    type="button"
-                  >
-                    {wishes[p.id] ? <BookmarkFilledIcon /> : <BookmarkOutlineIcon />}
-                  </button>
-
-                  {/* 담기 버튼 */}
-                  <button
-  className="wish"
-  type="button"
-  onClick={() => {
-    setOptionTarget(p);
-    setOptionValue("270");  // 초기화
-    setOptionQty(1);        // 초기화
-    setOptionOpen(true);
-  }}
->
-  담기
-</button>
-
-                </div>
               </RecoPriceRowStyled>
             </RecoCardStyled>
           ))}
         </RecoGridStyled>
       </RecoSectionStyled>
 
-      {/* Sticky Checkout Bar */}
-      <StickyBarStyled>
-        <div className="inner">
-          <div className="info">
-            <div className="label">총 {itemCount}개 · 결제 예정</div>
-            <div className="value">{numberFormat(totals.total)}원</div>
-          </div>
-          <button
-            disabled={!state.agreement || state.items.length === 0}
-            className="primary"
-            onClick={() => setToast("(데모) 결제 플로우로 이동")}
-          >
-            결제하기
-          </button>
-          {/* 상세보기: 주문서 요약 모달 오픈 */}
-          <button onClick={() => setOrderOpen(true)}>상세보기</button>
-          {state.items.length > 0 ? (
-            <button onClick={() => dispatch({ type: "CLEAR" })}>전체 비우기</button>
-          ) : null}
-        </div>
-      </StickyBarStyled>
+      {/* Sticky Checkout Bar 제거 */}
 
       {/* =============== 모달: 환불/교환 정책 =============== */}
       {policyOpen && (
@@ -684,9 +613,6 @@ useEffect(() => {
           >
             <ModalHeaderStyled>
               <h3>환불/교환 정책</h3>
-              <ModalCloseButtonStyled onClick={() => setPolicyOpen(false)}>
-                닫기
-              </ModalCloseButtonStyled>
             </ModalHeaderStyled>
             <ModalBodyStyled>
               <h4>기본 정책</h4>
