@@ -135,7 +135,7 @@ const SignupPage: React.FC = () => {
           </FieldStyled>
 
           <FieldStyled>
-            <LabelStyled>유저아이디 *</LabelStyled>
+            <LabelStyled>유저 네임 *</LabelStyled>
             <InputStyled
               type="text"
               placeholder="유저아이디를 입력하세요"
