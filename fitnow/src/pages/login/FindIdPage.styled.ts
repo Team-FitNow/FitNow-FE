@@ -17,7 +17,7 @@ export const CardStyled = styled.div`
   margin: 0 auto;
   flex-shrink: 0;
   position: relative;
-  transform: translateX(-170px);
+  transform: translateX(-130px);
 
   @media (min-width: 640px) {
     padding: ${({ theme }) => theme.spacing.xl};
@@ -54,6 +54,7 @@ export const PhoneInputContainer = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
+  width: 100%;
 `;
 
 export const PhoneInput = styled.input`

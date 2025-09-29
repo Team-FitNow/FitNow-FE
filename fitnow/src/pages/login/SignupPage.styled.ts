@@ -76,6 +76,7 @@ export const SelectStyled = styled.select`
 export const GenderButtonContainer = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing.sm};
+  width: 107%;
 `;
 
 export const GenderButton = styled.button<{ $selected?: boolean }>`
@@ -102,8 +103,8 @@ export const GenderButton = styled.button<{ $selected?: boolean }>`
 
 export const FileUploadContainer = styled.div`
   position: relative;
-  display: inline-block;
-  width: 100%;
+  display: block;
+  width: 101%;
 `;
 
 export const FileInput = styled.input`
@@ -137,7 +138,7 @@ export const ButtonContainer = styled.div`
 `;
 
 export const SignupButton = styled.button`
-  width: 100%;
+  width: 108%;
   height: 36px;
   border: 0;
   border-radius: 0;
